@@ -247,59 +247,80 @@
     @media (hover: none), (max-width: 768px) { #cursor { display: none; } }
 
     /* ─────────────────────────────────────────────────
-       OUR STORY — immersive dark section
+       OUR STORY
        ───────────────────────────────────────────────── */
     .story {
-      background: var(--ink);
+      background: var(--warm-white);
       padding: 140px 0;
       position: relative;
       overflow: hidden;
     }
-    .story::before {
-      content: "";
+    .story__accent {
       position: absolute;
-      inset: 0;
-      opacity: 0.25;
+      top: -40px;
+      right: -60px;
+      font-family: var(--font-display);
+      font-size: clamp(280px, 30vw, 420px);
+      color: var(--clay);
+      opacity: 0.04;
+      line-height: 1;
       pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 200px 200px;
+      user-select: none;
     }
     .story > .container { position: relative; z-index: 1; }
-    .story__top {
-      text-align: center;
-      max-width: 680px;
-      margin: 0 auto 72px;
+    .story__grid {
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: 80px;
+      align-items: start;
     }
     .story__eyebrow {
       display: block;
       margin-bottom: 24px;
-      color: var(--clay);
     }
     .story__title {
       font-family: var(--font-display);
       font-size: clamp(36px, 5vw, 52px);
-      color: var(--warm-white);
+      color: var(--ink);
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
-    .story__grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
+    .story__pullquote {
+      margin-top: 40px;
+      padding-left: 24px;
+      border-left: 3px solid var(--clay);
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.2vw, 22px);
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
     }
     .story__body {
+      margin-top: 32px;
       font-size: 16px;
       line-height: 1.85;
-      color: rgba(255,255,255,0.7);
+      color: var(--muted);
       font-weight: 300;
     }
     .story__body p + p { margin-top: 20px; }
+    .story__image-wrap {
+      position: relative;
+    }
     .story__image {
       aspect-ratio: 4/5;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 1;
+    }
+    .story__image-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 12px -12px -12px 12px;
+      border: 2px solid var(--clay);
+      border-radius: 16px;
+      opacity: 0.2;
+      z-index: 0;
     }
     .story__stats {
       display: grid;
@@ -307,7 +328,7 @@
       gap: 24px;
       margin-top: 80px;
       padding-top: 56px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid var(--line);
     }
     .story__stat {
       text-align: center;
@@ -323,7 +344,7 @@
       display: block;
       margin-top: 10px;
       font-size: 12px;
-      color: rgba(255,255,255,0.45);
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       font-weight: 500;
@@ -337,18 +358,18 @@
       align-items: center;
       gap: 12px;
       padding: 12px 20px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--warm-white);
+      border: 1px solid var(--stone);
       border-radius: 8px;
       text-decoration: none;
       transition: box-shadow 300ms var(--ease), transform 300ms var(--ease);
     }
-    .ta-badge:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.2); transform: translateY(-2px); }
+    .ta-badge:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); color: var(--ink); }
     .ta-badge__stars { display: flex; gap: 3px; }
     .ta-badge__star { width: 14px; height: 14px; border-radius: 50%; background: #00aa6c; }
-    .ta-badge__star--half { background: linear-gradient(90deg, #00aa6c 50%, rgba(255,255,255,0.15) 50%); }
-    .ta-badge__info { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.5); }
-    .ta-badge__rating { font-family: var(--font-display); font-size: 22px; color: var(--warm-white); }
+    .ta-badge__star--half { background: linear-gradient(90deg, #00aa6c 50%, var(--stone) 50%); }
+    .ta-badge__info { font-size: 12px; font-weight: 400; color: var(--muted); }
+    .ta-badge__rating { font-family: var(--font-display); font-size: 22px; color: var(--ink); }
 
     /* ─────────────────────────────────────────────────
        NEWSLETTER
@@ -1640,8 +1661,9 @@
       .dish-card.is-prev { transform: translateX(-65%) translateZ(-60px) scale(0.85) rotateY(6deg); }
       .dish-card.is-next { transform: translateX(65%) translateZ(-60px) scale(0.85) rotateY(-6deg); }
       .story__grid { grid-template-columns: 1fr; gap: 48px; }
-      .story__image { max-width: 400px; margin: 0 auto; }
+      .story__image-wrap { max-width: 400px; margin: 0 auto; }
       .story__stats { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .story__accent { display: none; }
       .menu-grid { grid-template-columns: 1fr; }
       .gallery__bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
       .gallery__item--feature { grid-column: span 2; grid-row: span 1; }
@@ -1714,6 +1736,8 @@
       .story__title { font-size: 32px; }
       .story__grid { grid-template-columns: 1fr; gap: 40px; }
       .story__stats { grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; padding-top: 36px; }
+      .story__accent { display: none; }
+      .story__image-wrap::after { display: none; }
       .full-menu { padding: 80px 0; }
       .full-menu__head h2 { font-size: 32px; }
       .menu-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -1798,17 +1822,19 @@
 
     <!-- OUR STORY -->
     <section class="story" id="story">
+      <div class="story__accent" aria-hidden="true">4</div>
       <div class="container">
-        <div class="story__top">
-          <span class="eyebrow story__eyebrow reveal">Our Story</span>
-          <h2 class="story__title reveal" style="transition-delay:100ms">Why four floors?<br>Because one wasn't enough.</h2>
-        </div>
-
         <div class="story__grid">
           <div class="story__content">
-            <div class="story__body reveal" style="transition-delay:200ms">
+            <span class="eyebrow eyebrow--clay story__eyebrow reveal">Our Story</span>
+            <h2 class="story__title reveal" style="transition-delay:100ms">Why four floors?<br>Because one wasn't enough.</h2>
+
+            <p class="story__pullquote reveal" style="transition-delay:180ms">
+              What if every floor told a different story?
+            </p>
+
+            <div class="story__body reveal" style="transition-delay:240ms">
               <p>
-                4Stories started with a simple idea: what if every floor told a different story?
                 In the middle of Thamel's beautiful chaos, we carved out a space where
                 mornings feel slow, afternoons stretch, and nights come alive.
               </p>
@@ -1822,7 +1848,7 @@
               </p>
             </div>
 
-            <a class="ta-badge reveal" style="transition-delay:300ms; margin-top: 32px;"
+            <a class="ta-badge reveal" style="transition-delay:320ms; margin-top: 32px;"
                href="https://www.tripadvisor.com/Restaurant_Review-g293890-d25031794-Reviews-4STORIES-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
                target="_blank" rel="noopener" data-hover>
               <span class="ta-badge__rating">4.4</span>
@@ -1838,8 +1864,11 @@
               </div>
             </a>
           </div>
-          <div class="img-wrap story__image reveal-image">
-            <img src="images/floor-01-coffee.webp" alt="Inside 4Stories coffee bar with marble tables, soft seating and warm lighting" loading="lazy" />
+
+          <div class="story__image-wrap reveal-image">
+            <div class="img-wrap story__image">
+              <img src="images/floor-01-coffee.webp" alt="Inside 4Stories coffee bar with marble tables, soft seating and warm lighting" loading="lazy" />
+            </div>
           </div>
         </div>
 
