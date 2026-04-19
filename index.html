@@ -13,7 +13,7 @@
   <!-- Open Graph -->
   <meta property="og:title" content="4Stories — Cafe · Eatery · Bar · Thamel" />
   <meta property="og:description" content="Four floors. One feeling. Coffee at dawn, brunch that lingers, dinner that turns into cocktails, and a rooftop where the city disappears." />
-  <meta property="og:image" content="images/hero.jpg" />
+  <meta property="og:image" content="images/hero.webp" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_US" />
 
@@ -21,7 +21,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="4Stories — Thamel, Kathmandu" />
   <meta name="twitter:description" content="Four floors. One feeling. A cafe, eatery & bar in the heart of Thamel." />
-  <meta name="twitter:image" content="images/hero.jpg" />
+  <meta name="twitter:image" content="images/hero.webp" />
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
@@ -30,7 +30,7 @@
     "@type": "Restaurant",
     "name": "4Stories",
     "description": "A cafe, eatery & bar spread across four floors in the heart of Thamel, Kathmandu.",
-    "image": "images/hero.jpg",
+    "image": "images/hero.webp",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Saat Ghumti Marg",
@@ -69,14 +69,17 @@
        TOKENS
        ───────────────────────────────────────────────── */
     :root {
-      --off-white:   #F9F6F0;
+      --off-white:   #F8F4EE;
       --warm-white:  #FDFBF7;
       --ink:         #1C1916;
-      --stone:       #E4DDD3;
+      --stone:       #E6DDD2;
       --clay:        #B8714E;
-      --clay-light:  #F0E0D6;
-      --muted:       #8A8178;
-      --surface:     #EFEBE4;
+      --clay-light:  #F1E2D8;
+      --muted:       #7E746A;
+      --surface:     #F1ECE5;
+      --surface-2:   #FBF8F3;
+      --line:        rgba(28, 25, 22, 0.08);
+      --shadow-soft: 0 18px 50px rgba(28, 25, 22, 0.08);
 
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -84,7 +87,10 @@
       --font-body:    "Instrument Sans", system-ui, sans-serif;
       --font-mono:    "DM Mono", ui-monospace, monospace;
 
-      --max:          1100px;
+      --max:          1160px;
+      --max-narrow:   720px;
+      --section-space: clamp(96px, 11vw, 156px);
+      --section-space-tight: clamp(72px, 8vw, 120px);
     }
 
     /* ─────────────────────────────────────────────────
@@ -94,63 +100,49 @@
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     body {
       font-family: var(--font-body);
-      font-weight: 300;
+      font-weight: 400;
       background: var(--off-white);
       color: var(--ink);
-      line-height: 1.85;
+      line-height: 1.72;
       overflow-x: hidden;
-      cursor: none;
     }
-    @media (hover: none) { body { cursor: auto; } }
 
     img { display: block; max-width: 100%; height: auto; }
-    a { color: inherit; text-decoration: none; transition: color 300ms var(--ease); }
+    a { color: inherit; text-decoration: none; transition: color 240ms var(--ease), opacity 240ms var(--ease), transform 240ms var(--ease); }
     a:hover { color: var(--clay); }
-    button { font: inherit; background: none; border: 0; color: inherit; cursor: none; }
+    button { font: inherit; background: none; border: 0; color: inherit; cursor: pointer; }
 
     ::selection { background: var(--clay); color: var(--warm-white); }
 
-    /* ─────────────────────────────────────────────────
-       CUSTOM CURSOR
-       ───────────────────────────────────────────────── */
-    #cursor {
-      position: fixed;
-      top: 0; left: 0;
-      width: 8px; height: 8px;
-      border-radius: 999px;
-      background: rgba(184, 113, 78, 0.8);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: width 200ms ease, height 200ms ease, background 200ms ease, opacity 200ms ease;
-      z-index: 9999;
-      mix-blend-mode: normal;
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
-    #cursor.grow {
-      width: 36px; height: 36px;
-      background: rgba(184, 113, 78, 0.25);
-    }
-    @media (hover: none), (max-width: 768px) { #cursor { display: none; } }
 
     /* ─────────────────────────────────────────────────
        REVEAL (Intersection Observer)
        ───────────────────────────────────────────────── */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(22px);
       transition:
-        opacity 700ms var(--ease),
-        transform 700ms var(--ease);
+        opacity 640ms var(--ease),
+        transform 640ms var(--ease);
       will-change: opacity, transform;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-image {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(22px) scale(0.985);
       transition:
-        opacity 900ms var(--ease),
-        transform 900ms var(--ease);
+        opacity 760ms var(--ease),
+        transform 760ms var(--ease);
     }
-    .reveal-image.visible { opacity: 1; transform: translateY(0); }
+    .reveal-image.visible { opacity: 1; transform: translateY(0) scale(1); }
 
     .stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
     .stagger > .reveal:nth-child(2) { transition-delay: 100ms; }
@@ -166,13 +158,13 @@
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 11px;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--muted);
     }
     .eyebrow--clay { color: var(--clay); }
-    .display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
-    .display-italic { font-family: var(--font-display); font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+    .display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.03em; line-height: 1; }
+    .display-italic { font-family: var(--font-display); font-style: italic; font-weight: 400; letter-spacing: -0.03em; }
 
     .container {
       max-width: var(--max);
@@ -181,6 +173,7 @@
     }
 
     section { position: relative; }
+    p { max-width: 62ch; }
 
     /* ─────────────────────────────────────────────────
        IMAGE WRAPPER — warm unifying overlay + slow hover
@@ -189,20 +182,25 @@
       position: relative;
       overflow: hidden;
       background: var(--surface);
+      border-radius: 20px;
     }
     .img-wrap::after {
       content: "";
       position: absolute; inset: 0;
-      background: rgba(28, 25, 22, 0.08);
+      background: linear-gradient(to top, rgba(28, 25, 22, 0.16), rgba(28, 25, 22, 0.02));
       pointer-events: none;
       z-index: 1;
     }
     .img-wrap img {
       width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 800ms var(--ease), filter 600ms var(--ease);
+      filter: saturate(0.94) contrast(0.98) brightness(0.98);
+      transition: transform 700ms var(--ease), filter 360ms var(--ease);
     }
-    .img-wrap:hover img { transform: scale(1.05); filter: brightness(1.05); }
+    .img-wrap:hover img {
+      transform: scale(1.03);
+      filter: saturate(1) contrast(1.02) brightness(1.02);
+    }
 
     /* ─────────────────────────────────────────────────
        PRELOADER
@@ -228,17 +226,53 @@
     }
 
     /* ─────────────────────────────────────────────────
+       CUSTOM CURSOR
+       ───────────────────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: rgba(184, 113, 78, 0.8);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 200ms ease, height 200ms ease, background 200ms ease, opacity 200ms ease;
+      z-index: 9999;
+      mix-blend-mode: normal;
+    }
+    #cursor.grow {
+      width: 36px; height: 36px;
+      background: rgba(184, 113, 78, 0.25);
+    }
+    @media (hover: none), (max-width: 768px) { #cursor { display: none; } }
+
+    /* ─────────────────────────────────────────────────
        OUR STORY
        ───────────────────────────────────────────────── */
     .story {
       background: var(--warm-white);
       padding: 140px 0;
+      position: relative;
+      overflow: hidden;
     }
+    .story__accent {
+      position: absolute;
+      top: -40px;
+      right: -60px;
+      font-family: var(--font-display);
+      font-size: clamp(280px, 30vw, 420px);
+      color: var(--clay);
+      opacity: 0.04;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .story > .container { position: relative; z-index: 1; }
     .story__grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 5fr 4fr;
       gap: 80px;
-      align-items: center;
+      align-items: start;
     }
     .story__eyebrow {
       display: block;
@@ -246,10 +280,21 @@
     }
     .story__title {
       font-family: var(--font-display);
-      font-size: 44px;
+      font-size: clamp(36px, 5vw, 52px);
       color: var(--ink);
       letter-spacing: -0.02em;
       line-height: 1.1;
+    }
+    .story__pullquote {
+      margin-top: 40px;
+      padding-left: 24px;
+      border-left: 3px solid var(--clay);
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.2vw, 22px);
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
     }
     .story__body {
       margin-top: 32px;
@@ -259,9 +304,50 @@
       font-weight: 300;
     }
     .story__body p + p { margin-top: 20px; }
+    .story__image-wrap {
+      position: relative;
+    }
     .story__image {
       aspect-ratio: 4/5;
-      border-radius: 4px;
+      border-radius: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .story__image-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 12px -12px -12px 12px;
+      border: 2px solid var(--clay);
+      border-radius: 16px;
+      opacity: 0.2;
+      z-index: 0;
+    }
+    .story__stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 80px;
+      padding-top: 56px;
+      border-top: 1px solid var(--line);
+    }
+    .story__stat {
+      text-align: center;
+    }
+    .story__stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 44px);
+      color: var(--clay);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .story__stat-label {
+      display: block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
     }
 
     /* ─────────────────────────────────────────────────
@@ -348,8 +434,20 @@
        ───────────────────────────────────────────────── */
     .full-menu {
       background: var(--off-white);
-      padding: 120px 0;
+      padding: var(--section-space) 0;
+      position: relative;
     }
+    .full-menu::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+    .full-menu > .container { position: relative; z-index: 1; }
     .full-menu__head {
       text-align: center;
       margin-bottom: 64px;
@@ -357,89 +455,160 @@
     .full-menu__head .eyebrow { display: block; margin-bottom: 20px; }
     .full-menu__head h2 {
       font-family: var(--font-display);
-      font-size: 44px;
+      font-size: clamp(36px, 5vw, 48px);
       color: var(--ink);
-      letter-spacing: -0.02em;
-      line-height: 1.1;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
     }
     .menu-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      max-width: 900px;
+      gap: 40px;
+      max-width: 920px;
       margin: 0 auto;
+    }
+    .menu-category {
+      background: var(--surface-2);
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      padding: 32px 28px;
+      transition: box-shadow 400ms var(--ease), transform 300ms var(--ease);
+    }
+    .menu-category:hover {
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-3px);
     }
     .menu-category__title {
       font-family: var(--font-display);
-      font-size: 24px;
+      font-size: 22px;
       color: var(--ink);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       padding-bottom: 12px;
       border-bottom: 2px solid var(--clay);
+      letter-spacing: -0.01em;
     }
     .menu-item {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--stone);
+      padding: 11px 0;
+      border-bottom: 1px solid var(--line);
     }
+    .menu-item:last-child { border-bottom: 0; }
     .menu-item__name {
       font-weight: 400;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--ink);
     }
     .menu-item__price {
       font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 12px;
+      color: var(--clay);
       white-space: nowrap;
       margin-left: 16px;
+      font-weight: 400;
     }
     .menu-item__tag {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--clay);
-      font-weight: 400;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-left: 6px;
     }
 
     /* ─────────────────────────────────────────────────
-       GALLERY
+       GALLERY — bento grid
        ───────────────────────────────────────────────── */
     .gallery {
-      padding: 120px 0;
+      padding: var(--section-space) 0;
       background: var(--warm-white);
+      overflow: hidden;
     }
     .gallery__head {
       text-align: center;
-      margin-bottom: 48px;
+      margin-bottom: 56px;
     }
     .gallery__head .eyebrow { display: block; margin-bottom: 20px; }
     .gallery__head h2 {
       font-family: var(--font-display);
-      font-size: 44px;
+      font-size: clamp(36px, 5vw, 48px);
       color: var(--ink);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
-    .gallery__grid {
+    .gallery__head p {
+      margin: 12px auto 0;
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 400px;
+    }
+    .gallery__bento {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-auto-rows: 200px;
+      gap: 12px;
       max-width: var(--max);
       margin: 0 auto;
       padding: 0 32px;
     }
-    .gallery__grid .img-wrap {
-      aspect-ratio: 1;
-      border-radius: 4px;
+    .gallery__item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
     }
-    .gallery__cta {
-      text-align: center;
-      margin-top: 40px;
+    .gallery__item img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.94) contrast(0.98) brightness(0.98);
+      transition: transform 600ms var(--ease), filter 600ms var(--ease);
     }
-    .gallery__cta a {
+    .gallery__item:hover img {
+      transform: scale(1.06);
+      filter: saturate(1.05) contrast(1) brightness(1);
+    }
+    .gallery__item::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(28,25,22,0.35) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 400ms var(--ease);
+      pointer-events: none;
+    }
+    .gallery__item:hover::after { opacity: 1; }
+    .gallery__item--tall { grid-row: span 2; }
+    .gallery__item--wide { grid-column: span 2; }
+    .gallery__item--feature { grid-column: span 2; grid-row: span 2; }
+
+    .gallery__footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .gallery__ig {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border: 1.5px solid var(--clay);
+      border-radius: 28px;
+      font-family: var(--font-body);
+      font-weight: 500;
       font-size: 14px;
       color: var(--clay);
-      font-weight: 400;
+      letter-spacing: 0.01em;
+      transition: background 300ms var(--ease), color 300ms var(--ease);
+    }
+    .gallery__ig:hover {
+      background: var(--clay);
+      color: var(--warm-white);
+    }
+    .gallery__ig svg {
+      width: 18px; height: 18px;
+      fill: currentColor;
     }
 
     /* ─────────────────────────────────────────────────
@@ -584,6 +753,7 @@
     .hero {
       position: relative;
       height: 100vh;
+      height: 100svh;
       min-height: 640px;
       overflow: hidden;
       color: var(--warm-white);
@@ -591,123 +761,167 @@
     .hero__bg {
       position: absolute; inset: 0;
       background:
+        url("images/hero.webp") center/cover no-repeat;
+    }
+    .hero__bg::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
         linear-gradient(to bottom,
           rgba(28,25,22,0.45) 0%,
-          rgba(28,25,22,0.20) 60%,
-          rgba(28,25,22,0.60) 100%),
-        url("images/hero.jpg") center/cover no-repeat;
+          rgba(28,25,22,0.15) 35%,
+          rgba(28,25,22,0.55) 70%,
+          rgba(28,25,22,0.88) 100%);
     }
     .hero__content {
       position: relative;
       z-index: 2;
       height: 100%;
-      max-width: 720px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 32px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 120px;
     }
     .hero__label {
       display: inline-flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
       font-family: var(--font-mono);
-      font-weight: 300;
+      font-weight: 400;
       font-size: 11px;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(249, 246, 240, 0.65);
+      color: rgba(249, 246, 240, 0.7);
       margin-bottom: 28px;
+      padding: 8px 20px;
+      border: 1px solid rgba(249, 246, 240, 0.18);
+      border-radius: 24px;
+      backdrop-filter: blur(8px);
+      background: rgba(249, 246, 240, 0.06);
     }
-    .hero__label::before {
-      content: "";
-      display: inline-block;
-      width: 32px; height: 1px;
-      background: rgba(249, 246, 240, 0.4);
+    .hero__label-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--clay);
     }
     .hero__title { color: var(--warm-white); }
     .hero__title .l1 {
       display: block;
       font-family: var(--font-display);
       font-style: italic;
-      font-size: clamp(52px, 9vw, 100px);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
     }
     .hero__title .l2 {
       display: block;
       font-family: var(--font-display);
-      font-size: clamp(52px, 9vw, 100px);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-left: 60px;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
       margin-top: 4px;
     }
     .hero__sub {
-      margin-top: 32px;
+      margin-top: 28px;
       font-weight: 300;
-      font-size: 16px;
-      line-height: 1.7;
-      color: rgba(249, 246, 240, 0.72);
-      max-width: 320px;
+      font-size: 17px;
+      line-height: 1.65;
+      color: rgba(249, 246, 240, 0.65);
+      max-width: 380px;
     }
-    .hero__cta {
+    .hero__ctas {
       margin-top: 40px;
-      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hero__cta-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      padding: 0 40px;
+      background: var(--clay);
       color: var(--warm-white);
-      position: relative;
-      align-self: flex-start;
-      padding-bottom: 4px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      border-radius: 28px;
+      transition: background 300ms var(--ease), transform 200ms var(--ease), box-shadow 300ms var(--ease);
     }
-    .hero__cta::after {
-      content: "";
-      position: absolute; left: 0; bottom: 0;
-      width: 0%; height: 1px;
-      background: var(--warm-white);
-      transition: width 400ms var(--ease);
+    .hero__cta-primary:hover {
+      background: #a0623f;
+      color: var(--warm-white);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184, 113, 78, 0.35);
     }
-    .hero__cta:hover::after { width: 100%; }
+    .hero__cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      padding: 0 40px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(249, 246, 240, 0.85);
+      border: 1px solid rgba(249, 246, 240, 0.25);
+      border-radius: 28px;
+      backdrop-filter: blur(6px);
+      background: rgba(249, 246, 240, 0.05);
+      transition: all 300ms var(--ease);
+    }
+    .hero__cta-secondary:hover {
+      color: var(--warm-white);
+      border-color: rgba(249, 246, 240, 0.5);
+      background: rgba(249, 246, 240, 0.1);
+    }
 
     /* hero staggered entrance */
-    .hero__label, .hero__title .l1, .hero__title .l2, .hero__sub, .hero__cta {
+    .hero__label, .hero__title .l1, .hero__title .l2, .hero__sub, .hero__ctas {
       opacity: 0;
-      transform: translateY(16px);
-      animation: hero-in 900ms var(--ease) forwards;
+      transform: translateY(18px);
+      animation: hero-in 800ms var(--ease) forwards;
     }
     .hero__label        { animation-delay: 200ms; }
-    .hero__title .l1    { animation-delay: 400ms; }
-    .hero__title .l2    { animation-delay: 500ms; }
-    .hero__sub          { animation-delay: 800ms; }
-    .hero__cta          { animation-delay: 1000ms; }
+    .hero__title .l1    { animation-delay: 380ms; }
+    .hero__title .l2    { animation-delay: 480ms; }
+    .hero__sub          { animation-delay: 720ms; }
+    .hero__ctas         { animation-delay: 920ms; }
     @keyframes hero-in {
       to { opacity: 1; transform: translateY(0); }
     }
 
     .hero__scroll {
       position: absolute;
-      bottom: 32px; left: 50%;
+      bottom: 36px; left: 50%;
       transform: translateX(-50%);
-      width: 1px; height: 40px;
-      background: rgba(249, 246, 240, 0.35);
-      overflow: hidden;
+      width: 24px; height: 40px;
+      border: 1.5px solid rgba(249, 246, 240, 0.3);
+      border-radius: 12px;
       z-index: 2;
     }
     .hero__scroll::after {
       content: "";
-      position: absolute; left: 50%;
-      top: -20px;
-      width: 3px; height: 12px;
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 3px; height: 8px;
       transform: translateX(-50%);
-      background: rgba(249, 246, 240, 0.9);
+      background: rgba(249, 246, 240, 0.7);
       border-radius: 2px;
       animation: scrollDot 2200ms var(--ease) infinite;
     }
     @keyframes scrollDot {
-      0%   { top: -20px; opacity: 0; }
-      20%  { opacity: 1; }
-      80%  { opacity: 1; }
-      100% { top: 48px; opacity: 0; }
+      0%   { top: 6px; opacity: 1; }
+      100% { top: 24px; opacity: 0; }
     }
 
     /* ─────────────────────────────────────────────────
@@ -715,397 +929,210 @@
        ───────────────────────────────────────────────── */
     .intro {
       background: var(--warm-white);
-      padding: 160px 0;
+      padding: var(--section-space) 0;
       text-align: center;
     }
     .intro__lede {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 48px;
-      line-height: 1.2;
+      font-size: clamp(36px, 5vw, 52px);
+      line-height: 1.18;
       color: var(--ink);
       max-width: 640px;
       margin: 0 auto;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
     .intro__body {
-      margin: 48px auto 0;
-      max-width: 480px;
-      font-size: 17px;
-      line-height: 1.85;
+      margin: 40px auto 0;
+      max-width: 500px;
+      font-size: 16px;
+      line-height: 1.8;
       color: var(--muted);
-      font-weight: 300;
-    }
-
-    /* ─────────────────────────────────────────────────
-       FOUR FLOORS — editorial, layered, cinematic
-       ───────────────────────────────────────────────── */
-    .floors {
-      position: relative;
-      background: var(--off-white);
-      padding: 160px 0 0;
-      overflow: hidden;
-    }
-
-    /* section header */
-    .floors__head {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 0 32px;
-    }
-    .floors__head .eyebrow { display: block; margin-bottom: 28px; }
-    .floors__head h2 {
-      font-family: var(--font-display);
-      font-size: clamp(56px, 9vw, 112px);
-      color: var(--ink);
-      letter-spacing: -0.03em;
-      line-height: 0.95;
-    }
-    .floors__head h2 em {
-      font-style: italic;
-      color: var(--clay);
       font-weight: 400;
     }
 
-    /* marquee divider */
-    .floors__marquee {
-      margin: 80px 0 120px;
-      overflow: hidden;
-      border-top: 1px solid var(--stone);
-      border-bottom: 1px solid var(--stone);
-      padding: 24px 0;
-      white-space: nowrap;
-      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-      -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    /* ─────────────────────────────────────────────────
+       FOUR FLOORS — clean card layout
+       ───────────────────────────────────────────────── */
+    .floors {
+      background: var(--off-white);
+      padding: var(--section-space) 0;
     }
-    .floors__marquee-track {
-      display: inline-block;
+    .floors__head {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .floors__head .eyebrow { display: block; margin-bottom: 20px; }
+    .floors__head h2 {
       font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(28px, 4vw, 44px);
+      font-size: clamp(36px, 5vw, 52px);
       color: var(--ink);
-      letter-spacing: -0.02em;
-      animation: marquee 42s linear infinite;
-      will-change: transform;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
     }
-    .floors__marquee-track span { color: var(--clay); margin: 0 28px; font-style: normal; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* sticky floor rail (desktop only) */
-    .floors__rail {
-      position: fixed;
-      top: 50%;
-      left: clamp(20px, 2.4vw, 44px);
-      transform: translateY(-50%);
-      z-index: 40;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 600ms var(--ease);
-    }
-    .floors__rail.is-visible { opacity: 1; pointer-events: auto; }
-    .floors__rail-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
+    .floors__head p {
+      margin: 16px auto 0;
+      font-size: 15px;
       color: var(--muted);
-      transition: color 400ms var(--ease);
+      max-width: 400px;
     }
-    .floors__rail-item::before {
-      content: "";
-      display: block;
-      width: 8px; height: 1px;
-      background: var(--muted);
-      transition: width 400ms var(--ease), background 400ms var(--ease);
-    }
-    .floors__rail-item.is-active { color: var(--ink); }
-    .floors__rail-item.is-active::before {
-      width: 28px;
-      background: var(--clay);
-    }
-    .floors__rail.on-dark .floors__rail-item { color: rgba(249, 246, 240, 0.55); }
-    .floors__rail.on-dark .floors__rail-item::before { background: rgba(249, 246, 240, 0.35); }
-    .floors__rail.on-dark .floors__rail-item.is-active { color: var(--warm-white); }
-    .floors__rail.on-dark .floors__rail-item.is-active::before { background: var(--clay); }
 
-    /* chapter */
-    .chapter {
-      position: relative;
-      padding: 100px 0;
-    }
-    .chapter__inner {
-      position: relative;
+    .floors__stack {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
       max-width: var(--max);
       margin: 0 auto;
       padding: 0 32px;
+    }
+
+    .floor-card {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
-      align-items: center;
-      min-height: 620px;
+      background: var(--warm-white);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      transition: box-shadow 500ms var(--ease), transform 400ms var(--ease);
     }
-    .chapter--reverse .chapter__media { order: 2; }
-    .chapter--reverse .chapter__body  { order: 1; }
-
-    /* ghost ordinal behind content */
-    .chapter__ghost {
-      position: absolute;
-      font-family: var(--font-display);
-      font-size: clamp(220px, 36vw, 460px);
-      color: var(--ink);
-      opacity: 0.055;
-      line-height: 0.8;
-      letter-spacing: -0.05em;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-      top: -60px;
+    .floor-card:hover {
+      box-shadow: 0 24px 64px rgba(28, 25, 22, 0.1);
+      transform: translateY(-4px);
     }
-    .chapter--01 .chapter__ghost { right: -40px; }
-    .chapter--02 .chapter__ghost { left: -40px; }
-    .chapter--03 .chapter__ghost { right: -40px; }
+    .floor-card--reverse { direction: rtl; }
+    .floor-card--reverse > * { direction: ltr; }
 
-    /* media */
-    .chapter__media {
+    .floor-card__img {
       position: relative;
-      height: 620px;
-      z-index: 1;
+      overflow: hidden;
+      min-height: 400px;
     }
-    .chapter__media .img-wrap {
+    .floor-card__img img {
+      position: absolute; inset: 0;
       width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.94) contrast(0.98) brightness(0.98);
+      transition: transform 700ms var(--ease);
     }
-    .chapter__media-frame {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 3;
-    }
-    .chapter__media-frame::before,
-    .chapter__media-frame::after {
-      content: "";
-      position: absolute;
-      width: 18px; height: 18px;
-      border: 1px solid var(--clay);
-      opacity: 0.75;
-    }
-    .chapter__media-frame::before {
-      top: 14px; left: 14px;
-      border-right: 0; border-bottom: 0;
-    }
-    .chapter__media-frame::after {
-      bottom: 14px; right: 14px;
-      border-left: 0; border-top: 0;
+    .floor-card:hover .floor-card__img img {
+      transform: scale(1.04);
     }
 
-    /* body */
-    .chapter__body {
-      position: relative;
-      z-index: 2;
-      padding: 0 16px;
-      max-width: 520px;
-    }
-    .chapter:not(.chapter--reverse) .chapter__body {
-      padding-left: 72px;
-      padding-right: 16px;
-    }
-    .chapter--reverse .chapter__body {
-      padding-right: 72px;
-      padding-left: 16px;
-      margin-left: auto;
-    }
-
-    .chapter__eyebrow {
+    .floor-card__body {
       display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      color: var(--clay);
-      text-transform: uppercase;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 52px;
     }
-    .chapter__eyebrow::after {
-      content: "";
-      display: block;
-      flex: 0 0 56px;
-      height: 1px;
-      background: var(--clay);
-      opacity: 0.55;
-    }
-    .chapter__name {
-      margin-top: 28px;
+    .floor-card__num {
       font-family: var(--font-display);
-      font-size: clamp(40px, 5.6vw, 64px);
-      color: var(--ink);
-      letter-spacing: -0.03em;
-      line-height: 0.98;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--stone);
+      letter-spacing: -0.04em;
+      margin-bottom: 20px;
     }
-    .chapter:not(.chapter--reverse) .chapter__name { margin-left: -56px; }
-    .chapter--reverse .chapter__name              { margin-right: -56px; }
-
-    .chapter__tag {
-      margin-top: 18px;
+    .floor-card__name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 36px);
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .floor-card__tag {
+      margin-top: 10px;
       font-family: var(--font-display);
       font-style: italic;
-      font-size: clamp(18px, 2vw, 24px);
+      font-size: 16px;
       color: var(--muted);
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      max-width: 380px;
+      line-height: 1.4;
     }
-    .chapter__copy {
-      margin-top: 32px;
-      font-size: 15px;
-      line-height: 1.9;
+    .floor-card__desc {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.75;
       color: var(--muted);
-      font-weight: 300;
+      font-weight: 400;
       max-width: 360px;
     }
-    .chapter__hours {
-      margin-top: 36px;
+    .floor-card__chips {
+      margin-top: 20px;
       display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .floor-card__chip {
+      display: inline-flex;
       align-items: center;
-      gap: 14px;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border-radius: 20px;
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 11px;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.08em;
       color: var(--muted);
       text-transform: uppercase;
     }
-    .chapter__hours::before {
+    .floor-card__chip::before {
       content: "";
       width: 5px; height: 5px;
       border-radius: 999px;
       background: var(--clay);
-      flex: 0 0 5px;
+      flex-shrink: 0;
     }
-
-    .chip {
-      display: inline-block;
-      padding: 8px 16px;
-      border: 1px solid var(--stone);
-      border-radius: 2px;
+    .floor-card__hours {
+      margin-top: 20px;
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 12px;
-      color: var(--ink);
       letter-spacing: 0.15em;
+      color: var(--clay);
       text-transform: uppercase;
     }
-    .chip--light {
-      border-color: rgba(249, 246, 240, 0.4);
-      color: var(--warm-white);
-      background: rgba(28, 25, 22, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: background 400ms var(--ease), color 400ms var(--ease);
-    }
-    .chip--light:hover {
-      background: var(--warm-white);
-      color: var(--ink);
-    }
 
-    /* connector between chapters */
-    .chapter__connector {
-      display: block;
-      width: 1px;
-      height: 120px;
-      margin: 0 auto;
-      background: linear-gradient(to bottom, transparent, var(--stone) 40%, var(--stone) 60%, transparent);
-    }
-
-    /* ─── Floor 04 · The Rooftop — poster ─── */
-    .floor-4 {
-      position: relative;
-      height: 100vh;
-      min-height: 700px;
-      overflow: hidden;
+    /* Floor 04 — dark full-bleed rooftop card */
+    .floor-card--dark {
       background: var(--ink);
-      color: var(--warm-white);
-    }
-    .floor-4__bg {
-      position: absolute; inset: 0;
-      background-image: url("images/floor-04-rooftop.jpg");
-      background-size: cover;
-      background-position: center;
-      animation: kenburns 26s ease-in-out infinite alternate;
-    }
-    .floor-4__bg::after {
-      content: "";
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(to bottom,
-          rgba(28,25,22,0.25) 0%,
-          rgba(28,25,22,0.45) 45%,
-          rgba(28,25,22,0.85) 100%);
-    }
-    @keyframes kenburns {
-      0%   { transform: scale(1.00) translate(0%, 0%); }
-      100% { transform: scale(1.14) translate(-1.8%, -1.2%); }
-    }
-
-    .floor-4__grid {
+      border-color: transparent;
       position: relative;
-      z-index: 2;
-      height: 100%;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 88px 32px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 40px;
     }
-    .floor-4__top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 32px;
-    }
-    .floor-4__index {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      color: rgba(249, 246, 240, 0.6);
-      text-transform: uppercase;
-    }
-    .floor-4__index::before {
+    .floor-card--dark .floor-card__img::after {
       content: "";
-      display: block;
-      width: 40px; height: 1px;
-      background: rgba(249, 246, 240, 0.4);
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(28,25,22,0.5) 0%, transparent 60%);
+      z-index: 1;
     }
-    .floor-4__live {
+    .floor-card--dark .floor-card__num { color: rgba(249, 246, 240, 0.15); }
+    .floor-card--dark .floor-card__name { color: var(--warm-white); }
+    .floor-card--dark .floor-card__tag { color: rgba(249, 246, 240, 0.65); }
+    .floor-card--dark .floor-card__desc { color: rgba(249, 246, 240, 0.55); }
+    .floor-card--dark .floor-card__chip {
+      background: rgba(249, 246, 240, 0.08);
+      color: rgba(249, 246, 240, 0.6);
+    }
+    .floor-card--dark .floor-card__hours { color: var(--clay); }
+    .floor-card--dark .floor-card__live {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      margin-top: 16px;
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 11px;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.2em;
       color: var(--warm-white);
       text-transform: uppercase;
     }
-    .floor-4__live-dot {
+    .floor-card__live-dot {
       width: 8px; height: 8px;
       border-radius: 999px;
       background: var(--clay);
       position: relative;
     }
-    .floor-4__live-dot::after {
+    .floor-card__live-dot::after {
       content: "";
       position: absolute; inset: 0;
       border-radius: 999px;
@@ -1113,222 +1140,209 @@
       animation: livepulse 1800ms ease-out infinite;
     }
     @keyframes livepulse {
-      0%   { transform: scale(1);   opacity: 0.7; }
-      100% { transform: scale(3.2); opacity: 0;   }
-    }
-
-    .floor-4__center {
-      align-self: center;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 48px;
-      align-items: end;
-    }
-    .floor-4__num {
-      font-family: var(--font-display);
-      font-size: clamp(160px, 24vw, 320px);
-      line-height: 0.82;
-      color: transparent;
-      -webkit-text-stroke: 1.2px rgba(249, 246, 240, 0.8);
-      letter-spacing: -0.05em;
-    }
-    .floor-4__copy {
-      padding-bottom: 18px;
-      max-width: 560px;
-    }
-    .floor-4__name {
-      font-family: var(--font-display);
-      font-size: clamp(48px, 7vw, 96px);
-      color: var(--warm-white);
-      letter-spacing: -0.03em;
-      line-height: 0.95;
-    }
-    .floor-4__tag {
-      margin-top: 20px;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(18px, 2.2vw, 26px);
-      color: rgba(249, 246, 240, 0.75);
-      line-height: 1.35;
-    }
-
-    .floor-4__bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(249, 246, 240, 0.16);
-    }
-    .floor-4__meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 28px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      color: rgba(249, 246, 240, 0.6);
-      text-transform: uppercase;
-    }
-    .floor-4__meta span { position: relative; }
-    .floor-4__meta span + span::before {
-      content: "";
-      position: absolute;
-      left: -15px; top: 50%;
-      width: 3px; height: 3px;
-      border-radius: 999px;
-      background: rgba(249, 246, 240, 0.3);
-      transform: translateY(-50%);
+      0%   { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(3.2); opacity: 0; }
     }
 
     /* ─────────────────────────────────────────────────
-       SIGNATURE DISHES
+       SIGNATURE DISHES — carousel
        ───────────────────────────────────────────────── */
     .dishes {
-      background: var(--clay-light);
-      padding: 140px 0;
+      background: var(--warm-white);
+      padding: var(--section-space) 0;
+      overflow: hidden;
     }
     .dishes__head {
       text-align: center;
-      margin-bottom: 80px;
+      margin-bottom: 56px;
     }
     .dishes__head .eyebrow { display: block; margin-bottom: 20px; }
     .dishes__head h2 {
       font-family: var(--font-display);
-      font-size: 52px;
+      font-size: clamp(36px, 5vw, 52px);
       color: var(--ink);
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      white-space: pre-line;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
     }
-    .dishes__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px 40px;
-      max-width: 980px;
+    .dishes__head p {
+      margin: 16px auto 0;
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 380px;
+    }
+
+    .dishes__carousel {
+      position: relative;
+      max-width: 1060px;
       margin: 0 auto;
     }
-    .dish__img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      border-radius: 2px;
-      background: var(--surface);
-    }
-    .dish__name {
-      margin-top: 20px;
-      font-family: var(--font-display);
-      font-size: 20px;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-    }
-    .dish__desc {
-      margin-top: 6px;
-      font-size: 13px;
-      line-height: 1.6;
-      color: var(--muted);
-      font-weight: 300;
-    }
-    .dishes__more {
-      margin-top: 64px;
-      text-align: center;
-    }
-    .dishes__more a {
-      font-size: 14px;
-      color: var(--clay);
-      font-weight: 400;
-      position: relative;
-      padding-bottom: 2px;
-    }
-    .dishes__more a::after {
-      content: "";
-      position: absolute; left: 0; bottom: 0;
-      width: 0%; height: 1px;
-      background: var(--clay);
-      transition: width 400ms var(--ease);
-    }
-    .dishes__more a:hover::after { width: 100%; }
-
-    /* dish card hover overlay */
-    .dish figcaption {
-      transition: transform 300ms var(--ease);
-    }
-    .dish:hover figcaption {
-      transform: translateY(-4px);
-    }
-    .dish__img::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(28,25,22,0.3) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity 400ms var(--ease);
-      z-index: 2;
-      border-radius: 2px;
-    }
-    .dish:hover .dish__img::before { opacity: 1; }
-
-    /* ─────────────────────────────────────────────────
-       FEELING — editorial spread
-       ───────────────────────────────────────────────── */
-    .feeling {
-      position: relative;
-      background: var(--ink);
-      min-height: 70vh;
+    .dishes__track {
       display: flex;
       align-items: center;
-      overflow: hidden;
-    }
-    .feeling__grid {
-      position: absolute; inset: 0;
-      display: grid;
-      grid-template-columns: 60% 40%;
-    }
-    .feeling__grid .img-wrap { height: 100%; }
-    .feeling__grid .img-wrap::after {
-      background:
-        radial-gradient(ellipse at center,
-          transparent 20%,
-          rgba(28,25,22,0.6) 100%);
-    }
-    .feeling__grid img { width: 100%; height: 100%; object-fit: cover; }
-
-    .feeling__quote {
+      justify-content: center;
       position: relative;
+      height: 420px;
+      perspective: 1400px;
+      transform-style: preserve-3d;
+    }
+    .dish-card {
+      position: absolute;
+      width: 340px;
+      background: var(--warm-white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      will-change: transform, opacity;
+      transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .dish-card.is-active {
+      z-index: 3;
+      transform: translateX(0) translateZ(0) scale(1);
+      opacity: 1;
+    }
+    .dish-card.is-prev {
       z-index: 2;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 120px 32px;
+      transform: translateX(-68%) translateZ(-80px) scale(0.88) rotateY(6deg);
+      opacity: 0.65;
+    }
+    .dish-card.is-next {
+      z-index: 2;
+      transform: translateX(68%) translateZ(-80px) scale(0.88) rotateY(-6deg);
+      opacity: 0.65;
+    }
+    .dish-card.is-hidden {
+      z-index: 1;
+      transform: translateX(0) translateZ(-160px) scale(0.75);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .dish-card__img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      position: relative;
+    }
+    .dish-card__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.94) contrast(0.98) brightness(0.98);
+      transition: transform 600ms var(--ease);
+    }
+    .dish-card.is-active:hover .dish-card__img img {
+      transform: scale(1.04);
+    }
+    .dish-card__fav {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 200ms var(--ease), transform 200ms var(--ease);
+      cursor: pointer;
+    }
+    .dish-card__fav:hover {
+      background: rgba(255,255,255,1);
+      transform: scale(1.1);
+    }
+    .dish-card__fav svg {
+      width: 18px; height: 18px;
+      fill: none;
+      stroke: var(--clay);
+      stroke-width: 1.8;
+    }
+    .dish-card__body {
+      padding: 24px 28px 28px;
       text-align: center;
-      color: var(--warm-white);
     }
-    .feeling__quote blockquote {
+    .dish-card__name {
       font-family: var(--font-display);
-      font-style: italic;
-      font-size: 38px;
-      line-height: 1.25;
+      font-size: 22px;
+      color: var(--ink);
       letter-spacing: -0.02em;
+    }
+    .dish-card__desc {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .dishes__controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .dishes__arrow {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--stone);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 240ms var(--ease), border-color 240ms var(--ease), transform 200ms var(--ease);
+      cursor: pointer;
+    }
+    .dishes__arrow:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      transform: scale(1.06);
+    }
+    .dishes__arrow svg {
+      width: 20px; height: 20px;
+      stroke: var(--ink);
+      stroke-width: 1.6;
+      fill: none;
+      transition: stroke 240ms var(--ease);
+    }
+    .dishes__arrow:hover svg { stroke: var(--warm-white); }
+
+    .dishes__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 48px;
+      padding: 0 32px;
+      border: 1.5px solid var(--clay);
+      border-radius: 28px;
+      background: transparent;
+      color: var(--clay);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.03em;
+      transition: background 300ms var(--ease), color 300ms var(--ease), transform 200ms var(--ease);
+      cursor: pointer;
+    }
+    .dishes__cta:hover {
+      background: var(--clay);
       color: var(--warm-white);
-      white-space: pre-line;
+      transform: translateY(-2px);
     }
-    .feeling__quote cite {
-      display: block;
-      margin-top: 24px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      font-style: normal;
-      letter-spacing: 0.2em;
-      color: rgba(249, 246, 240, 0.5);
-      text-transform: uppercase;
+    .dishes__cta svg {
+      width: 18px; height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      fill: none;
     }
+
 
     /* ─────────────────────────────────────────────────
        TESTIMONIALS
        ───────────────────────────────────────────────── */
     .voices {
       background: var(--warm-white);
-      padding: 140px 0;
+      padding: var(--section-space) 0;
     }
     .voices__head {
       text-align: center;
@@ -1339,57 +1353,81 @@
     .voices__hero {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 36px;
-      line-height: 1.35;
+      font-size: clamp(32px, 4.8vw, 44px);
+      line-height: 1.3;
       color: var(--ink);
       max-width: 700px;
       margin: 0 auto;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
     }
     .voices__cite {
       display: block;
-      margin-top: 20px;
-      font-size: 13px;
+      margin-top: 18px;
+      font-size: 12px;
       color: var(--muted);
       font-weight: 300;
+      letter-spacing: 0.06em;
     }
     .voices__rule {
-      width: 80px; height: 1px;
+      width: 56px; height: 1px;
       background: var(--stone);
-      margin: 80px auto 60px;
+      margin: 72px auto 56px;
     }
     .voices__grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 56px;
+      gap: 48px;
       max-width: var(--max);
       margin: 0 auto;
       padding: 0 32px;
     }
+    .voice {
+      position: relative;
+      padding: 36px 32px;
+      background: var(--surface-2);
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      transition: box-shadow 400ms var(--ease), transform 300ms var(--ease);
+    }
+    .voice:hover {
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-4px);
+    }
+    .voice::before {
+      content: "\201C";
+      position: absolute;
+      top: 20px; left: 28px;
+      font-family: var(--font-display);
+      font-size: 56px;
+      line-height: 1;
+      color: var(--clay);
+      opacity: 0.25;
+    }
     .voice__quote {
-      font-family: var(--font-body);
+      font-family: var(--font-display);
       font-style: italic;
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 1.6;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.55;
       color: var(--ink);
+      letter-spacing: -0.01em;
     }
     .voice__name {
-      margin-top: 16px;
+      margin-top: 20px;
       font-family: var(--font-mono);
       font-weight: 300;
-      font-size: 12px;
-      letter-spacing: 0.1em;
+      font-size: 11px;
+      letter-spacing: 0.12em;
       color: var(--muted);
       text-transform: uppercase;
     }
     .voice__dots {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
-      gap: 5px;
+      gap: 4px;
     }
     .voice__dots span {
-      width: 6px; height: 6px;
+      width: 5px; height: 5px;
       border-radius: 999px;
       background: var(--clay);
       display: block;
@@ -1400,7 +1438,7 @@
        ───────────────────────────────────────────────── */
     .visit {
       background: var(--off-white);
-      padding: 140px 0;
+      padding: var(--section-space) 0;
     }
     .visit__grid {
       display: grid;
@@ -1410,7 +1448,7 @@
     }
     .visit__map {
       overflow: hidden;
-      border-radius: 2px;
+      border-radius: 16px;
       position: relative;
       background: var(--surface);
     }
@@ -1419,7 +1457,7 @@
       width: 100%;
       height: 440px;
       border: 0;
-      filter: grayscale(0.3) contrast(1.08);
+      filter: grayscale(0.25) contrast(1.06);
     }
     .visit__map::after {
       content: "";
@@ -1473,9 +1511,10 @@
       align-items: center;
       justify-content: center;
       margin-top: 40px;
-      height: 56px;
+      height: 52px;
       width: 100%;
       border: 1px solid var(--ink);
+      border-radius: 6px;
       background: transparent;
       color: var(--ink);
       font-family: var(--font-body);
@@ -1506,12 +1545,12 @@
     .foot {
       background: var(--ink);
       color: var(--warm-white);
-      padding: 80px 0 48px;
+      padding: 88px 0 44px;
     }
     .foot__grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 48px;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 56px;
       align-items: start;
     }
     .foot__brand {
@@ -1526,38 +1565,100 @@
       font-weight: 300;
       color: rgba(249, 246, 240, 0.45);
     }
+    .foot__hours {
+      margin-top: 20px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 1.8;
+      color: rgba(249, 246, 240, 0.5);
+    }
+    .foot__reserve {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      height: 44px;
+      padding: 0 28px;
+      background: var(--clay);
+      color: var(--warm-white);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      border-radius: 6px;
+      transition: background 300ms var(--ease), transform 200ms var(--ease);
+    }
+    .foot__reserve:hover {
+      background: #a0623f;
+      color: var(--warm-white);
+      transform: translateY(-2px);
+    }
     .foot__links {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      align-items: center;
+      align-items: flex-start;
+    }
+    .foot__links-title {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(249, 246, 240, 0.35);
+      margin-bottom: 6px;
     }
     .foot__links a {
-      font-size: 13px;
+      font-size: 14px;
       color: rgba(249, 246, 240, 0.6);
       font-weight: 300;
+      transition: color 240ms var(--ease);
     }
     .foot__links a:hover { color: rgba(249, 246, 240, 1); }
-    .foot__addr {
+    .foot__contact {
       text-align: right;
+    }
+    .foot__contact-title {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(249, 246, 240, 0.35);
+      margin-bottom: 12px;
+    }
+    .foot__addr {
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 12px;
-      color: rgba(249, 246, 240, 0.45);
+      color: rgba(249, 246, 240, 0.5);
       line-height: 1.8;
       white-space: pre-line;
     }
+    .foot__social {
+      margin-top: 16px;
+      display: flex;
+      gap: 16px;
+      justify-content: flex-end;
+    }
+    .foot__social a {
+      font-size: 13px;
+      color: rgba(249, 246, 240, 0.55);
+      font-weight: 400;
+    }
+    .foot__social a:hover { color: var(--clay); }
     .foot__bottom {
-      margin-top: 64px;
+      margin-top: 56px;
       padding-top: 24px;
-      border-top: 1px solid rgba(138, 129, 120, 0.2);
+      border-top: 1px solid rgba(138, 129, 120, 0.15);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 11px;
-      color: rgba(249, 246, 240, 0.3);
+      color: rgba(249, 246, 240, 0.25);
       letter-spacing: 0.1em;
     }
 
@@ -1565,16 +1666,26 @@
        RESPONSIVE
        ───────────────────────────────────────────────── */
     @media (max-width: 1200px) {
-      .floors__rail { display: none; }
+      .floor-card { grid-template-columns: 1fr; }
+      .floor-card--reverse { direction: ltr; }
+      .floor-card__img { min-height: 300px; }
+      .floor-card__body { padding: 36px 32px; }
     }
     @media (max-width: 900px) {
       .voices__grid { grid-template-columns: 1fr; gap: 48px; }
-      .dishes__grid { grid-template-columns: 1fr; gap: 48px; max-width: 420px; }
-      .feeling__grid { grid-template-columns: 1fr 1fr; }
+      .dish-card { width: 300px; }
+      .dishes__track { height: 380px; }
+      .dish-card.is-prev { transform: translateX(-65%) translateZ(-60px) scale(0.85) rotateY(6deg); }
+      .dish-card.is-next { transform: translateX(65%) translateZ(-60px) scale(0.85) rotateY(-6deg); }
       .story__grid { grid-template-columns: 1fr; gap: 48px; }
-      .story__image { max-width: 400px; margin: 0 auto; }
+      .story__image-wrap { max-width: 400px; margin: 0 auto; }
+      .story__stats { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .story__accent { display: none; }
       .menu-grid { grid-template-columns: 1fr; }
-      .gallery__grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery__bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+      .gallery__item--feature { grid-column: span 2; grid-row: span 1; }
+      .gallery__item--wide { grid-column: span 2; }
+      .gallery__item--tall { grid-row: span 2; }
     }
 
     @media (max-width: 768px) {
@@ -1587,94 +1698,42 @@
       .container { padding: 0 24px; }
 
       .hero { min-height: 560px; }
+      .hero__content { padding-bottom: 100px; }
       .hero__title .l1,
       .hero__title .l2 {
-        font-size: 52px;
+        font-size: 44px;
       }
-      .hero__title .l2 { margin-left: 24px; }
       .hero__sub { font-size: 15px; }
+      .hero__ctas { gap: 16px; flex-direction: column; }
+      .hero__cta-primary { height: 48px; padding: 0 32px; font-size: 13px; }
+      .hero__cta-secondary { height: 48px; padding: 0 32px; font-size: 13px; }
 
       .intro { padding: 80px 24px; }
       .intro__lede { font-size: 30px; }
       .intro__body { font-size: 16px; }
 
-      .floors { padding: 80px 0 0; }
-      .floors__head { padding: 0 24px; }
-      .floors__head h2 { font-size: 44px; }
-      .floors__marquee { margin: 56px 0 64px; padding: 18px 0; }
-      .floors__marquee-track { font-size: 22px; }
-
-      .chapter { padding: 48px 0; }
-      .chapter__inner {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        gap: 24px;
-        padding: 0 24px;
-      }
-      .chapter--reverse .chapter__media { order: 1; }
-      .chapter--reverse .chapter__body  { order: 2; }
-      .chapter__media { height: 380px; }
-      .chapter__body,
-      .chapter:not(.chapter--reverse) .chapter__body,
-      .chapter--reverse .chapter__body {
-        padding: 0;
-        max-width: 100%;
-      }
-      .chapter__ghost {
-        font-size: 140px;
-        top: -12px;
-        opacity: 0.07;
-      }
-      .chapter--01 .chapter__ghost { right: -8px; }
-      .chapter--02 .chapter__ghost { left: -8px; }
-      .chapter--03 .chapter__ghost { right: -8px; }
-      .chapter:not(.chapter--reverse) .chapter__name,
-      .chapter--reverse .chapter__name {
-        margin-left: 0;
-        margin-right: 0;
-      }
-      .chapter__name { font-size: 34px; }
-      .chapter__tag { font-size: 18px; }
-      .chapter__media-frame::before,
-      .chapter__media-frame::after { width: 12px; height: 12px; }
-
-      .chapter__connector { height: 56px; }
-
-      .floor-4 { height: auto; min-height: 640px; }
-      .floor-4__grid { padding: 72px 24px; gap: 28px; }
-      .floor-4__top { gap: 16px; flex-wrap: wrap; }
-      .floor-4__center {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        align-items: start;
-      }
-      .floor-4__num { font-size: 140px; line-height: 0.85; }
-      .floor-4__name { font-size: 44px; }
-      .floor-4__tag { font-size: 18px; }
-      .floor-4__bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-      }
-      .floor-4__meta { gap: 20px; font-size: 10px; }
+      .floors { padding: 80px 0; }
+      .floors__stack { padding: 0 16px; }
+      .floor-card__num { font-size: 48px; }
+      .floor-card__name { font-size: 26px; }
+      .floor-card__img { min-height: 260px; }
 
       .dishes { padding: 80px 24px; }
       .dishes__head h2 { font-size: 34px; }
-      .dishes__grid { grid-template-columns: 1fr; gap: 48px; }
+      .dish-card { width: 260px; }
+      .dishes__track { height: 340px; }
+      .dish-card.is-prev { transform: translateX(-60%) translateZ(-60px) scale(0.82) rotateY(5deg); }
+      .dish-card.is-next { transform: translateX(60%) translateZ(-60px) scale(0.82) rotateY(-5deg); }
+      .dishes__controls { gap: 20px; }
+      .dishes__arrow { width: 40px; height: 40px; }
+      .dishes__cta { height: 42px; padding: 0 24px; font-size: 13px; }
 
-      .feeling { min-height: auto; }
-      .feeling__grid {
-        position: relative;
-        inset: auto;
-        grid-template-columns: 1fr 1fr;
-        height: 280px;
-      }
-      .feeling__quote { position: relative; padding: 64px 24px; }
-      .feeling__quote blockquote { font-size: 26px; }
 
       .voices { padding: 80px 24px; }
       .voices__hero { font-size: 26px; }
-      .voices__grid { padding: 0; }
+      .voices__grid { padding: 0; gap: 20px; }
+      .voice { padding: 28px 24px; }
+      .voice__quote { font-size: 16px; }
 
       .visit { padding: 80px 24px; }
       .visit__grid { grid-template-columns: 1fr; gap: 40px; }
@@ -1683,9 +1742,10 @@
       .visit__map iframe { height: 320px; }
 
       .foot { padding: 64px 24px 32px; }
-      .foot__grid { grid-template-columns: 1fr; gap: 32px; text-align: left; }
+      .foot__grid { grid-template-columns: 1fr; gap: 36px; text-align: left; }
       .foot__links { align-items: flex-start; }
-      .foot__addr { text-align: left; }
+      .foot__contact { text-align: left; }
+      .foot__social { justify-content: flex-start; }
       .foot__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
 
       .nav-overlay a { font-size: 44px; }
@@ -1693,11 +1753,16 @@
       .story { padding: 80px 0; }
       .story__title { font-size: 32px; }
       .story__grid { grid-template-columns: 1fr; gap: 40px; }
+      .story__stats { grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; padding-top: 36px; }
+      .story__accent { display: none; }
+      .story__image-wrap::after { display: none; }
       .full-menu { padding: 80px 0; }
       .full-menu__head h2 { font-size: 32px; }
       .menu-grid { grid-template-columns: 1fr; gap: 32px; }
       .gallery { padding: 80px 0; }
-      .gallery__grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 24px; }
+      .gallery__bento { grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px; grid-auto-rows: 160px; }
+      .gallery__item--feature { grid-column: span 2; grid-row: span 1; }
+      .gallery__ig { padding: 12px 24px; font-size: 13px; }
       .newsletter { padding: 56px 24px; }
       .newsletter__title { font-size: 24px; }
       .newsletter__form { flex-direction: column; padding: 0 24px; }
@@ -1747,13 +1812,16 @@
     <section class="hero">
       <div class="hero__bg" aria-hidden="true"></div>
       <div class="hero__content">
-        <div class="hero__label">Thamel · Kathmandu</div>
+        <div class="hero__label"><span class="hero__label-dot"></span> Thamel · Kathmandu</div>
         <h1 class="hero__title">
           <span class="l1">Four floors.</span>
           <span class="l2">One feeling.</span>
         </h1>
         <p class="hero__sub">A cafe, eatery &amp; bar in the heart of Thamel.</p>
-        <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="hero__cta" data-hover>Reserve a table ↗</a>
+        <div class="hero__ctas">
+          <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="hero__cta-primary" data-hover>Reserve a Table</a>
+          <a href="#full-menu" class="hero__cta-secondary" data-hover>Explore the Menu</a>
+        </div>
       </div>
       <div class="hero__scroll" aria-hidden="true"></div>
     </section>
@@ -1772,14 +1840,19 @@
 
     <!-- OUR STORY -->
     <section class="story" id="story">
+      <div class="story__accent" aria-hidden="true">4</div>
       <div class="container">
         <div class="story__grid">
           <div class="story__content">
             <span class="eyebrow eyebrow--clay story__eyebrow reveal">Our Story</span>
             <h2 class="story__title reveal" style="transition-delay:100ms">Why four floors?<br>Because one wasn't enough.</h2>
-            <div class="story__body reveal" style="transition-delay:200ms">
+
+            <p class="story__pullquote reveal" style="transition-delay:180ms">
+              What if every floor told a different story?
+            </p>
+
+            <div class="story__body reveal" style="transition-delay:240ms">
               <p>
-                4Stories started with a simple idea: what if every floor told a different story?
                 In the middle of Thamel's beautiful chaos, we carved out a space where
                 mornings feel slow, afternoons stretch, and nights come alive.
               </p>
@@ -1793,8 +1866,7 @@
               </p>
             </div>
 
-            <!-- TripAdvisor Badge -->
-            <a class="ta-badge reveal" style="transition-delay:300ms; margin-top: 32px;"
+            <a class="ta-badge reveal" style="transition-delay:320ms; margin-top: 32px;"
                href="https://www.tripadvisor.com/Restaurant_Review-g293890-d25031794-Reviews-4STORIES-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
                target="_blank" rel="noopener" data-hover>
               <span class="ta-badge__rating">4.4</span>
@@ -1810,226 +1882,210 @@
               </div>
             </a>
           </div>
-          <div class="img-wrap story__image reveal-image">
-            <img src="images/floor-01-coffee.jpg" alt="Inside 4Stories coffee bar with marble tables, soft seating and warm lighting" loading="lazy" />
+
+          <div class="story__image-wrap reveal-image">
+            <div class="img-wrap story__image">
+              <img src="images/floor-01-coffee.webp" alt="Inside 4Stories coffee bar with marble tables, soft seating and warm lighting" loading="lazy" />
+            </div>
           </div>
         </div>
+
+
       </div>
     </section>
 
     <!-- FOUR FLOORS -->
     <section class="floors" id="floors">
-      <!-- Sticky floor rail (desktop) -->
-      <nav class="floors__rail" id="floorRail" aria-label="Floor index">
-        <a href="#floor-01" class="floors__rail-item" data-rail="01">01</a>
-        <a href="#floor-02" class="floors__rail-item" data-rail="02">02</a>
-        <a href="#floor-03" class="floors__rail-item" data-rail="03">03</a>
-        <a href="#floor-04" class="floors__rail-item" data-rail="04">04</a>
-      </nav>
-
-      <!-- Section header -->
-      <header class="floors__head">
-        <span class="eyebrow reveal">01 / The Building</span>
-        <h2 class="reveal" style="transition-delay:120ms">Four <em>stories.</em></h2>
-      </header>
-
-      <!-- Marquee divider -->
-      <div class="floors__marquee reveal" aria-hidden="true">
-        <div class="floors__marquee-track">
-          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
-          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
-        </div>
+      <div class="container">
+        <header class="floors__head">
+          <span class="eyebrow reveal">The Building</span>
+          <h2 class="reveal" style="transition-delay:120ms">Four floors. Four worlds.</h2>
+          <p class="reveal" style="transition-delay:200ms">Each level its own character, its own rhythm, its own reason to stay.</p>
+        </header>
       </div>
 
-      <!-- Floor 01 -->
-      <article class="chapter chapter--01" id="floor-01" data-floor="01">
-        <div class="chapter__inner">
-          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">01</div>
-
-          <div class="chapter__media">
-            <div class="img-wrap reveal-image" data-hover>
-              <img src="images/floor-01-coffee.jpg"
-                   alt="4Stories coffee bar with lounge seating, plants and the bar counter in view" loading="lazy" />
-            </div>
-            <div class="chapter__media-frame" aria-hidden="true"></div>
+      <div class="floors__stack">
+        <!-- Floor 01 -->
+        <article class="floor-card reveal" id="floor-01">
+          <div class="floor-card__img">
+            <img src="images/floor-01-coffee.webp"
+                 alt="4Stories coffee bar with lounge seating, plants and the bar counter in view" loading="lazy" />
           </div>
-
-          <div class="chapter__body stagger" data-parallax="0.04">
-            <div class="chapter__eyebrow reveal">Floor 01</div>
-            <h3 class="chapter__name reveal">The Coffee Bar</h3>
-            <p class="chapter__tag reveal">Where every morning begins.</p>
-            <p class="chapter__copy reveal">
+          <div class="floor-card__body">
+            <div class="floor-card__num">01</div>
+            <h3 class="floor-card__name">The Coffee Bar</h3>
+            <p class="floor-card__tag">Where every morning begins.</p>
+            <p class="floor-card__desc">
               Ground floor. The entry. The smell of espresso before you've said a word.
               Pull up a stool, open your notebook, let Kathmandu wait outside.
             </p>
-            <div class="chapter__hours reveal">7 AM onwards</div>
-          </div>
-        </div>
-      </article>
-
-      <span class="chapter__connector" aria-hidden="true"></span>
-
-      <!-- Floor 02 -->
-      <article class="chapter chapter--reverse chapter--02" id="floor-02" data-floor="02">
-        <div class="chapter__inner">
-          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">02</div>
-
-          <div class="chapter__media">
-            <div class="img-wrap reveal-image" data-hover>
-              <img src="images/floor-02-brunch.jpg"
-                   alt="A poached egg stack with guacamole, corn and chili sauce" loading="lazy" />
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Espresso Bar</span>
+              <span class="floor-card__chip">Lounge Seating</span>
+              <span class="floor-card__chip">Pour-over</span>
             </div>
-            <div class="chapter__media-frame" aria-hidden="true"></div>
+            <div class="floor-card__hours">7 AM onwards</div>
           </div>
+        </article>
 
-          <div class="chapter__body stagger" data-parallax="0.04">
-            <div class="chapter__eyebrow reveal">Floor 02</div>
-            <h3 class="chapter__name reveal">The Brunch Table</h3>
-            <p class="chapter__tag reveal">The meal that turns into conversation.</p>
-            <p class="chapter__copy reveal">
+        <!-- Floor 02 -->
+        <article class="floor-card floor-card--reverse reveal" id="floor-02">
+          <div class="floor-card__img">
+            <img src="images/floor-02-brunch.webp"
+                 alt="A poached egg stack with guacamole, corn and chili sauce" loading="lazy" />
+          </div>
+          <div class="floor-card__body">
+            <div class="floor-card__num">02</div>
+            <h3 class="floor-card__name">The Brunch Table</h3>
+            <p class="floor-card__tag">The meal that turns into conversation.</p>
+            <p class="floor-card__desc">
               Acai bowls. Wild mushroom toast. Blueberry matcha that people order twice.
-              The second floor is unhurried — a place for mornings that stretch into afternoons.
+              The second floor is unhurried — mornings that stretch into afternoons.
             </p>
-            <div class="chapter__hours reveal">9 AM – 4 PM</div>
-          </div>
-        </div>
-      </article>
-
-      <span class="chapter__connector" aria-hidden="true"></span>
-
-      <!-- Floor 03 -->
-      <article class="chapter chapter--03" id="floor-03" data-floor="03">
-        <div class="chapter__inner">
-          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">03</div>
-
-          <div class="chapter__media">
-            <div class="img-wrap reveal-image" data-hover>
-              <img src="images/floor-03-dining.jpg"
-                   alt="4Stories dining room during live music with warm lighting and lounge seating" loading="lazy" />
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Brunch Menu</span>
+              <span class="floor-card__chip">Matcha</span>
+              <span class="floor-card__chip">Smoothie Bowls</span>
             </div>
-            <div class="chapter__media-frame" aria-hidden="true"></div>
+            <div class="floor-card__hours">9 AM – 4 PM</div>
           </div>
+        </article>
 
-          <div class="chapter__body stagger" data-parallax="0.04">
-            <div class="chapter__eyebrow reveal">Floor 03</div>
-            <h3 class="chapter__name reveal">The Dining Room</h3>
-            <p class="chapter__tag reveal">Flavors from here and everywhere.</p>
-            <p class="chapter__copy reveal">
+        <!-- Floor 03 -->
+        <article class="floor-card reveal" id="floor-03">
+          <div class="floor-card__img">
+            <img src="images/floor-03-dining.webp"
+                 alt="4Stories dining room during live music with warm lighting and lounge seating" loading="lazy" />
+          </div>
+          <div class="floor-card__body">
+            <div class="floor-card__num">03</div>
+            <h3 class="floor-card__name">The Dining Room</h3>
+            <p class="floor-card__tag">Flavors from here and everywhere.</p>
+            <p class="floor-card__desc">
               Tofu tacos alongside Nepali classics. Pizza from a real kitchen.
-              Food that surprises you regardless of where you're from. The third floor is where
-              you come for dinner and stay for the music.
+              Food that surprises you regardless of where you're from. Come for dinner, stay for the music.
             </p>
-            <div class="chapter__hours reveal">12 PM – 11 PM</div>
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Live Music</span>
+              <span class="floor-card__chip">Nepali Thali</span>
+              <span class="floor-card__chip">Wood-fired Pizza</span>
+            </div>
+            <div class="floor-card__hours">12 PM – 11 PM</div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Floor 04 — The Rooftop · poster -->
-      <section class="floor-4" id="floor-04" data-floor="04" data-hover>
-        <div class="floor-4__bg" aria-hidden="true"></div>
-
-        <div class="floor-4__grid">
-          <div class="floor-4__top">
-            <div class="floor-4__index reveal">The Rooftop · 04 / 04</div>
-            <div class="floor-4__live reveal" style="transition-delay:120ms">
-              <span class="floor-4__live-dot" aria-hidden="true"></span>
+        <!-- Floor 04 -->
+        <article class="floor-card floor-card--dark floor-card--reverse reveal" id="floor-04">
+          <div class="floor-card__img">
+            <img src="images/floor-04-rooftop.webp"
+                 alt="4Stories rooftop terrace at dusk with city views and warm lighting" loading="lazy" />
+          </div>
+          <div class="floor-card__body">
+            <div class="floor-card__num">04</div>
+            <h3 class="floor-card__name">The Rooftop</h3>
+            <p class="floor-card__tag">Thamel from above. Cocktails. Live music. Tonight.</p>
+            <p class="floor-card__desc">
+              The top floor opens up to the sky. Cocktails, hookah, and live music
+              with the Kathmandu skyline as backdrop. This is where evenings turn into nights.
+            </p>
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Cocktails</span>
+              <span class="floor-card__chip">Live Music</span>
+              <span class="floor-card__chip">Hookah</span>
+            </div>
+            <div class="floor-card__hours">5 PM – 2 AM</div>
+            <div class="floor-card__live">
+              <span class="floor-card__live-dot" aria-hidden="true"></span>
               Live · Tonight
             </div>
           </div>
-
-          <div class="floor-4__center">
-            <div class="floor-4__num reveal" aria-hidden="true">04</div>
-            <div class="floor-4__copy stagger">
-              <h3 class="floor-4__name reveal">The Rooftop</h3>
-              <p class="floor-4__tag reveal">Thamel from above. Cocktails. Live music. Tonight.</p>
-            </div>
-          </div>
-
-          <div class="floor-4__bottom">
-            <div class="floor-4__meta reveal">
-              <span>5 PM — 2 AM</span>
-              <span>Cocktails</span>
-              <span>Live Music</span>
-              <span>Hookah</span>
-            </div>
-            <a href="https://wa.me/9779808790813" target="_blank" rel="noopener"
-               class="chip chip--light reveal" style="transition-delay:120ms" data-hover>
-              Book the rooftop ↗
-            </a>
-          </div>
-        </div>
-      </section>
+        </article>
+      </div>
     </section>
 
-    <!-- SIGNATURE DISHES -->
-    <section class="dishes">
+    <!-- SIGNATURE DISHES — carousel -->
+    <section class="dishes" id="dishes">
       <div class="container">
         <div class="dishes__head">
           <span class="eyebrow eyebrow--clay reveal">The Menu</span>
-          <h2 class="reveal" style="transition-delay:120ms">A few things
-people come back for.</h2>
+          <h2 class="reveal" style="transition-delay:120ms">A few things people come back for.</h2>
+          <p class="reveal" style="transition-delay:200ms">Explore our signature dishes</p>
         </div>
 
-        <div class="dishes__grid stagger">
-          <figure class="dish reveal">
-            <div class="img-wrap dish__img" data-hover>
-              <img src="images/dish-matcha.jpg"
-                   alt="Veggie delight platter with falafel, guacamole and iced coffee" loading="lazy" />
+        <div class="dishes__carousel reveal" style="transition-delay:280ms">
+          <div class="dishes__track" id="dishTrack">
+            <div class="dish-card is-prev" data-dish="0">
+              <div class="dish-card__img">
+                <img src="images/dish-matcha.webp" alt="Veggie delight platter with falafel, guacamole and iced coffee" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">The Veggie Delight</div>
+                <div class="dish-card__desc">Falafel, guacamole, hummus & everything good.</div>
+              </div>
             </div>
-            <figcaption>
-              <div class="dish__name">The Veggie Delight</div>
-              <div class="dish__desc">Falafel, guacamole, hummus & everything good.</div>
-            </figcaption>
-          </figure>
 
-          <figure class="dish reveal">
-            <div class="img-wrap dish__img" data-hover>
-              <img src="images/dish-benedict.jpg"
-                   alt="Rice bowl with falafel, roasted vegetables and hummus" loading="lazy" />
+            <div class="dish-card is-active" data-dish="1">
+              <div class="dish-card__img">
+                <img src="images/dish-benedict.webp" alt="Rice bowl with falafel, roasted vegetables and hummus" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">Harvest Bowl</div>
+                <div class="dish-card__desc">Rice, falafel, roasted veg & all the good stuff.</div>
+              </div>
             </div>
-            <figcaption>
-              <div class="dish__name">Harvest Bowl</div>
-              <div class="dish__desc">Rice, falafel, roasted veg & all the good stuff.</div>
-            </figcaption>
-          </figure>
 
-          <figure class="dish reveal">
-            <div class="img-wrap dish__img" data-hover>
-              <img src="images/dish-bowl.jpg"
-                   alt="Smoothie bowl with watermelon, pomegranate and chia" loading="lazy" />
+            <div class="dish-card is-next" data-dish="2">
+              <div class="dish-card__img">
+                <img src="images/dish-bowl.webp" alt="Smoothie bowl with watermelon, pomegranate and chia" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">Smoothie Bowl</div>
+                <div class="dish-card__desc">Watermelon, walnuts, pomegranate. Breakfast as art.</div>
+              </div>
             </div>
-            <figcaption>
-              <div class="dish__name">Smoothie Bowl</div>
-              <div class="dish__desc">Watermelon, walnuts, pomegranate. Breakfast as art.</div>
-            </figcaption>
-          </figure>
-        </div>
 
-        <div class="dishes__more reveal">
-          <a href="#full-menu" data-hover>See the full menu →</a>
+            <div class="dish-card is-hidden" data-dish="3">
+              <div class="dish-card__img">
+                <img src="images/feeling-detail.webp" alt="Birthday brownie plate with iced cappuccino" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">The Celebration</div>
+                <div class="dish-card__desc">Brownie, iced cappuccino & a moment to remember.</div>
+              </div>
+            </div>
+
+            <div class="dish-card is-hidden" data-dish="4">
+              <div class="dish-card__img">
+                <img src="images/feeling-ambient.webp" alt="Coffee and food spread at 4Stories" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">The Full Spread</div>
+                <div class="dish-card__desc">Coffee, brunch plates & afternoon vibes.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dishes__controls">
+            <button class="dishes__arrow" id="dishPrev" aria-label="Previous dish">
+              <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <a href="#full-menu" class="dishes__cta" data-hover>
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              See Full Menu
+            </a>
+            <button class="dishes__arrow" id="dishNext" aria-label="Next dish">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- FEELING -->
-    <section class="feeling" aria-label="Editorial spread">
-      <div class="feeling__grid" aria-hidden="true">
-        <div class="img-wrap">
-          <img src="images/feeling-ambient.jpg"
-               alt="Sculptural ceiling over cream sofas and warm lighting" loading="lazy" />
-        </div>
-        <div class="img-wrap">
-          <img src="images/feeling-detail.jpg"
-               alt="A brownie with 'Happy Birthday' written in chocolate" loading="lazy" />
-        </div>
-      </div>
-
-      <div class="feeling__quote">
-        <blockquote class="reveal">The atmosphere is so sexy,
-the food is amazing.</blockquote>
-        <cite class="reveal" style="transition-delay:120ms">— TripAdvisor, 2024</cite>
-      </div>
-    </section>
 
     <!-- VOICES -->
     <section class="voices">
@@ -2120,22 +2176,43 @@ the food is amazing.</blockquote>
 
     <!-- GALLERY -->
     <section class="gallery" id="gallery">
-      <div class="gallery__head">
-        <span class="eyebrow reveal">Captured Moments</span>
-        <h2 class="reveal" style="transition-delay:120ms">Inside 4Stories</h2>
+      <div class="container">
+        <div class="gallery__head">
+          <span class="eyebrow reveal">Captured Moments</span>
+          <h2 class="reveal" style="transition-delay:120ms">Inside 4Stories</h2>
+          <p class="reveal" style="transition-delay:200ms">Snapshots from the floors, the food, and the people who make it all worth it.</p>
+        </div>
       </div>
-      <div class="gallery__grid stagger">
-        <div class="img-wrap reveal"><img src="images/hero.jpg" alt="4Stories interior lounge" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/floor-02-brunch.jpg" alt="Open terrace brunch seating" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/floor-03-dining.jpg" alt="4Stories dining room with live music and warm evening lighting" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/floor-04-rooftop.jpg" alt="4Stories rooftop terrace with open-air seating and city views" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/feeling-ambient.jpg" alt="Food and coffee scene" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/dish-bowl.jpg" alt="Smoothie bowl" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/dish-matcha.jpg" alt="Veggie delight platter" loading="lazy" /></div>
-        <div class="img-wrap reveal"><img src="images/feeling-detail.jpg" alt="Veggie plate with coffee" loading="lazy" /></div>
+
+      <div class="gallery__bento">
+        <div class="gallery__item gallery__item--feature reveal">
+          <img src="images/feeling-ambient.webp" alt="Food and coffee scene at 4Stories" loading="lazy" />
+        </div>
+        <div class="gallery__item gallery__item--tall reveal">
+          <img src="images/floor-04-rooftop.webp" alt="4Stories rooftop terrace with open-air seating and city views" loading="lazy" />
+        </div>
+        <div class="gallery__item reveal">
+          <img src="images/dish-bowl.webp" alt="Smoothie bowl with fresh fruit toppings" loading="lazy" />
+        </div>
+        <div class="gallery__item reveal">
+          <img src="images/floor-02-brunch.webp" alt="Open terrace brunch seating" loading="lazy" />
+        </div>
+        <div class="gallery__item reveal">
+          <img src="images/dish-benedict.webp" alt="Rice bowl with falafel, roasted vegetables and hummus" loading="lazy" />
+        </div>
+        <div class="gallery__item gallery__item--wide reveal">
+          <img src="images/floor-03-dining.webp" alt="4Stories dining room with live music and warm evening lighting" loading="lazy" />
+        </div>
+        <div class="gallery__item reveal">
+          <img src="images/dish-matcha.webp" alt="Veggie delight platter" loading="lazy" />
+        </div>
       </div>
-      <div class="gallery__cta reveal" style="margin-top: 40px; text-align: center;">
-        <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>Follow @4stories.np for more →</a>
+
+      <div class="gallery__footer reveal">
+        <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" class="gallery__ig" data-hover>
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Follow @4stories.np
+        </a>
       </div>
     </section>
 
@@ -2202,19 +2279,28 @@ the food is amazing.</blockquote>
         <div class="reveal">
           <div class="foot__brand">4Stories</div>
           <div class="foot__tag">Cafe · Eatery · Bar · Thamel</div>
+          <div class="foot__hours">Open daily, 7 AM – 2 AM</div>
+          <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="foot__reserve" data-hover>Reserve a Table</a>
         </div>
 
         <nav class="foot__links reveal" aria-label="Footer">
+          <div class="foot__links-title">Explore</div>
           <a href="#full-menu" data-hover>Menu</a>
           <a href="#floors" data-hover>Floors</a>
           <a href="#gallery" data-hover>Gallery</a>
           <a href="#story" data-hover>Our Story</a>
-          <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" data-hover>Reserve</a>
-          <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>Instagram</a>
+          <a href="#visit" data-hover>Visit</a>
         </nav>
 
-        <div class="foot__addr reveal">Saat Ghumti Marg
-Thamel, Kathmandu</div>
+        <div class="foot__contact reveal">
+          <div class="foot__contact-title">Find Us</div>
+          <div class="foot__addr">Saat Ghumti Marg
+Thamel, Kathmandu 44600</div>
+          <div class="foot__social">
+            <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>Instagram</a>
+            <a href="https://www.tripadvisor.com/Restaurant_Review-g293890-d25031794-Reviews-4STORIES-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html" target="_blank" rel="noopener" data-hover>TripAdvisor</a>
+          </div>
+        </div>
       </div>
 
       <div class="foot__bottom">
@@ -2329,6 +2415,62 @@ Thamel, Kathmandu</div>
     })();
 
     /* ─────────────────────────────────────────────────
+       DISH CAROUSEL
+       ───────────────────────────────────────────────── */
+    (function () {
+      const cards = Array.from(document.querySelectorAll('.dish-card'));
+      const prevBtn = document.getElementById('dishPrev');
+      const nextBtn = document.getElementById('dishNext');
+      if (!cards.length || !prevBtn || !nextBtn) return;
+
+      let active = cards.findIndex(c => c.classList.contains('is-active'));
+      if (active < 0) active = 0;
+
+      function layout() {
+        const n = cards.length;
+        cards.forEach((card, i) => {
+          card.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden');
+          if (i === active) card.classList.add('is-active');
+          else if (i === (active - 1 + n) % n) card.classList.add('is-prev');
+          else if (i === (active + 1) % n) card.classList.add('is-next');
+          else card.classList.add('is-hidden');
+        });
+      }
+
+      prevBtn.addEventListener('click', () => {
+        active = (active - 1 + cards.length) % cards.length;
+        layout();
+      });
+      nextBtn.addEventListener('click', () => {
+        active = (active + 1) % cards.length;
+        layout();
+      });
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          const i = cards.indexOf(card);
+          if (i !== active) { active = i; layout(); }
+        });
+      });
+
+      let startX = 0;
+      const track = document.getElementById('dishTrack');
+      if (track) {
+        track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+        track.addEventListener('touchend', e => {
+          const dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 40) {
+            if (dx < 0) { active = (active + 1) % cards.length; }
+            else { active = (active - 1 + cards.length) % cards.length; }
+            layout();
+          }
+        });
+      }
+
+      layout();
+    })();
+
+    /* ─────────────────────────────────────────────────
        SUBTLE PARALLAX — [data-parallax="0.04"]
        ───────────────────────────────────────────────── */
     (function () {
@@ -2357,47 +2499,6 @@ Thamel, Kathmandu</div>
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       update();
-    })();
-
-    /* ─────────────────────────────────────────────────
-       FLOOR RAIL — sticky index with active floor tracking
-       ───────────────────────────────────────────────── */
-    (function () {
-      const rail = document.getElementById('floorRail');
-      const floorsSection = document.getElementById('floors');
-      if (!rail || !floorsSection || !('IntersectionObserver' in window)) return;
-
-      const items = rail.querySelectorAll('.floors__rail-item');
-      const floors = floorsSection.querySelectorAll('[data-floor]');
-
-      // Show/hide the rail when the floors section is in the viewport
-      const sectionObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => rail.classList.toggle('is-visible', e.isIntersecting));
-      }, { threshold: 0, rootMargin: '-80px 0px -80px 0px' });
-      sectionObs.observe(floorsSection);
-
-      // Track which floor is nearest viewport center
-      const setActive = (id) => {
-        items.forEach(i => i.classList.toggle('is-active', i.dataset.rail === id));
-        rail.classList.toggle('on-dark', id === '04');
-      };
-      const floorObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) setActive(e.target.dataset.floor);
-        });
-      }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
-      floors.forEach(f => floorObs.observe(f));
-
-      // Smooth scroll on click (offset for fixed nav)
-      items.forEach(item => {
-        item.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector(item.getAttribute('href'));
-          if (!target) return;
-          const y = target.getBoundingClientRect().top + window.scrollY - 80;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        });
-      });
     })();
 
     /* ─────────────────────────────────────────────────
