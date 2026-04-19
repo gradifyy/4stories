@@ -1304,17 +1304,17 @@
 
     .dishes__carousel {
       position: relative;
-      max-width: 1000px;
+      max-width: 1060px;
       margin: 0 auto;
-      perspective: 1200px;
     }
     .dishes__track {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0;
       position: relative;
       height: 420px;
+      perspective: 1400px;
+      transform-style: preserve-3d;
     }
     .dish-card {
       position: absolute;
@@ -1323,27 +1323,28 @@
       border-radius: 20px;
       box-shadow: var(--shadow-soft);
       overflow: hidden;
-      transition: transform 600ms var(--ease), opacity 600ms var(--ease), z-index 0ms 300ms;
+      will-change: transform, opacity;
+      transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
     }
     .dish-card.is-active {
       z-index: 3;
-      transform: translateX(0) scale(1) rotateY(0deg);
+      transform: translateX(0) translateZ(0) scale(1);
       opacity: 1;
     }
     .dish-card.is-prev {
       z-index: 2;
-      transform: translateX(-72%) scale(0.85) rotateY(12deg);
-      opacity: 0.7;
+      transform: translateX(-68%) translateZ(-80px) scale(0.88) rotateY(6deg);
+      opacity: 0.65;
     }
     .dish-card.is-next {
       z-index: 2;
-      transform: translateX(72%) scale(0.85) rotateY(-12deg);
-      opacity: 0.7;
+      transform: translateX(68%) translateZ(-80px) scale(0.88) rotateY(-6deg);
+      opacity: 0.65;
     }
     .dish-card.is-hidden {
       z-index: 1;
-      transform: translateX(0) scale(0.7);
+      transform: translateX(0) translateZ(-160px) scale(0.75);
       opacity: 0;
       pointer-events: none;
     }
@@ -1856,6 +1857,8 @@
       .voices__grid { grid-template-columns: 1fr; gap: 48px; }
       .dish-card { width: 300px; }
       .dishes__track { height: 380px; }
+      .dish-card.is-prev { transform: translateX(-65%) translateZ(-60px) scale(0.85) rotateY(6deg); }
+      .dish-card.is-next { transform: translateX(65%) translateZ(-60px) scale(0.85) rotateY(-6deg); }
       .feeling__grid { grid-template-columns: 1fr 1fr; }
       .story__grid { grid-template-columns: 1fr; gap: 48px; }
       .story__image { max-width: 400px; margin: 0 auto; }
@@ -1950,8 +1953,8 @@
       .dishes__head h2 { font-size: 34px; }
       .dish-card { width: 260px; }
       .dishes__track { height: 340px; }
-      .dish-card.is-prev { transform: translateX(-65%) scale(0.8) rotateY(12deg); }
-      .dish-card.is-next { transform: translateX(65%) scale(0.8) rotateY(-12deg); }
+      .dish-card.is-prev { transform: translateX(-60%) translateZ(-60px) scale(0.82) rotateY(5deg); }
+      .dish-card.is-next { transform: translateX(60%) translateZ(-60px) scale(0.82) rotateY(-5deg); }
       .dishes__controls { gap: 20px; }
       .dishes__arrow { width: 40px; height: 40px; }
       .dishes__cta { height: 42px; padding: 0 24px; font-size: 13px; }
