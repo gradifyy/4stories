@@ -1276,89 +1276,195 @@
     }
 
     /* ─────────────────────────────────────────────────
-       SIGNATURE DISHES
+       SIGNATURE DISHES — carousel
        ───────────────────────────────────────────────── */
     .dishes {
-      background: var(--clay-light);
+      background: var(--warm-white);
       padding: var(--section-space) 0;
+      overflow: hidden;
     }
     .dishes__head {
       text-align: center;
-      margin-bottom: 80px;
+      margin-bottom: 56px;
     }
     .dishes__head .eyebrow { display: block; margin-bottom: 20px; }
     .dishes__head h2 {
       font-family: var(--font-display);
-      font-size: 52px;
+      font-size: clamp(36px, 5vw, 52px);
       color: var(--ink);
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      white-space: pre-line;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
     }
-    .dishes__grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px 40px;
-      max-width: 980px;
-      margin: 0 auto;
-    }
-    .dish__img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      border-radius: 16px;
-      background: var(--surface);
-    }
-    .dish__name {
-      margin-top: 20px;
-      font-family: var(--font-display);
-      font-size: 20px;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-    }
-    .dish__desc {
-      margin-top: 6px;
-      font-size: 13px;
-      line-height: 1.6;
+    .dishes__head p {
+      margin: 16px auto 0;
+      font-size: 15px;
       color: var(--muted);
-      font-weight: 300;
+      max-width: 380px;
     }
-    .dishes__more {
-      margin-top: 64px;
+
+    .dishes__carousel {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      perspective: 1200px;
+    }
+    .dishes__track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      position: relative;
+      height: 420px;
+    }
+    .dish-card {
+      position: absolute;
+      width: 340px;
+      background: var(--warm-white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      transition: transform 600ms var(--ease), opacity 600ms var(--ease), z-index 0ms 300ms;
+      cursor: pointer;
+    }
+    .dish-card.is-active {
+      z-index: 3;
+      transform: translateX(0) scale(1) rotateY(0deg);
+      opacity: 1;
+    }
+    .dish-card.is-prev {
+      z-index: 2;
+      transform: translateX(-72%) scale(0.85) rotateY(12deg);
+      opacity: 0.7;
+    }
+    .dish-card.is-next {
+      z-index: 2;
+      transform: translateX(72%) scale(0.85) rotateY(-12deg);
+      opacity: 0.7;
+    }
+    .dish-card.is-hidden {
+      z-index: 1;
+      transform: translateX(0) scale(0.7);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .dish-card__img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      position: relative;
+    }
+    .dish-card__img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.94) contrast(0.98) brightness(0.98);
+      transition: transform 600ms var(--ease);
+    }
+    .dish-card.is-active:hover .dish-card__img img {
+      transform: scale(1.04);
+    }
+    .dish-card__fav {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 200ms var(--ease), transform 200ms var(--ease);
+      cursor: pointer;
+    }
+    .dish-card__fav:hover {
+      background: rgba(255,255,255,1);
+      transform: scale(1.1);
+    }
+    .dish-card__fav svg {
+      width: 18px; height: 18px;
+      fill: none;
+      stroke: var(--clay);
+      stroke-width: 1.8;
+    }
+    .dish-card__body {
+      padding: 24px 28px 28px;
       text-align: center;
     }
-    .dishes__more a {
+    .dish-card__name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .dish-card__desc {
+      margin-top: 8px;
       font-size: 14px;
-      color: var(--clay);
+      line-height: 1.55;
+      color: var(--muted);
       font-weight: 400;
-      position: relative;
-      padding-bottom: 2px;
     }
-    .dishes__more a::after {
-      content: "";
-      position: absolute; left: 0; bottom: 0;
-      width: 0%; height: 1px;
-      background: var(--clay);
-      transition: width 400ms var(--ease);
-    }
-    .dishes__more a:hover::after { width: 100%; }
 
-    /* dish card hover overlay */
-    .dish figcaption {
-      transition: transform 300ms var(--ease);
+    .dishes__controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 40px;
     }
-    .dish:hover figcaption {
-      transform: translateY(-4px);
+    .dishes__arrow {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--stone);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 240ms var(--ease), border-color 240ms var(--ease), transform 200ms var(--ease);
+      cursor: pointer;
     }
-    .dish__img::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(28,25,22,0.3) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity 400ms var(--ease);
-      z-index: 2;
-      border-radius: 16px;
+    .dishes__arrow:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      transform: scale(1.06);
     }
-    .dish:hover .dish__img::before { opacity: 1; }
+    .dishes__arrow svg {
+      width: 20px; height: 20px;
+      stroke: var(--ink);
+      stroke-width: 1.6;
+      fill: none;
+      transition: stroke 240ms var(--ease);
+    }
+    .dishes__arrow:hover svg { stroke: var(--warm-white); }
+
+    .dishes__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 48px;
+      padding: 0 32px;
+      border: 1.5px solid var(--clay);
+      border-radius: 28px;
+      background: transparent;
+      color: var(--clay);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.03em;
+      transition: background 300ms var(--ease), color 300ms var(--ease), transform 200ms var(--ease);
+      cursor: pointer;
+    }
+    .dishes__cta:hover {
+      background: var(--clay);
+      color: var(--warm-white);
+      transform: translateY(-2px);
+    }
+    .dishes__cta svg {
+      width: 18px; height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      fill: none;
+    }
 
     /* ─────────────────────────────────────────────────
        FEELING — editorial spread
@@ -1748,7 +1854,8 @@
     }
     @media (max-width: 900px) {
       .voices__grid { grid-template-columns: 1fr; gap: 48px; }
-      .dishes__grid { grid-template-columns: 1fr; gap: 48px; max-width: 420px; }
+      .dish-card { width: 300px; }
+      .dishes__track { height: 380px; }
       .feeling__grid { grid-template-columns: 1fr 1fr; }
       .story__grid { grid-template-columns: 1fr; gap: 48px; }
       .story__image { max-width: 400px; margin: 0 auto; }
@@ -1841,7 +1948,13 @@
 
       .dishes { padding: 80px 24px; }
       .dishes__head h2 { font-size: 34px; }
-      .dishes__grid { grid-template-columns: 1fr; gap: 48px; }
+      .dish-card { width: 260px; }
+      .dishes__track { height: 340px; }
+      .dish-card.is-prev { transform: translateX(-65%) scale(0.8) rotateY(12deg); }
+      .dish-card.is-next { transform: translateX(65%) scale(0.8) rotateY(-12deg); }
+      .dishes__controls { gap: 20px; }
+      .dishes__arrow { width: 40px; height: 40px; }
+      .dishes__cta { height: 42px; padding: 0 24px; font-size: 13px; }
 
       .feeling { min-height: auto; }
       .feeling__grid {
@@ -2163,52 +2276,85 @@
       </section>
     </section>
 
-    <!-- SIGNATURE DISHES -->
-    <section class="dishes">
+    <!-- SIGNATURE DISHES — carousel -->
+    <section class="dishes" id="dishes">
       <div class="container">
         <div class="dishes__head">
           <span class="eyebrow eyebrow--clay reveal">The Menu</span>
-          <h2 class="reveal" style="transition-delay:120ms">A few things
-people come back for.</h2>
+          <h2 class="reveal" style="transition-delay:120ms">A few things people come back for.</h2>
+          <p class="reveal" style="transition-delay:200ms">Explore our signature dishes</p>
         </div>
 
-        <div class="dishes__grid stagger">
-          <figure class="dish reveal">
-            <div class="img-wrap dish__img" data-hover>
-              <img src="images/dish-matcha.webp"
-                   alt="Veggie delight platter with falafel, guacamole and iced coffee" loading="lazy" />
+        <div class="dishes__carousel reveal" style="transition-delay:280ms">
+          <div class="dishes__track" id="dishTrack">
+            <div class="dish-card is-prev" data-dish="0">
+              <div class="dish-card__img">
+                <img src="images/dish-matcha.webp" alt="Veggie delight platter with falafel, guacamole and iced coffee" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">The Veggie Delight</div>
+                <div class="dish-card__desc">Falafel, guacamole, hummus & everything good.</div>
+              </div>
             </div>
-            <figcaption>
-              <div class="dish__name">The Veggie Delight</div>
-              <div class="dish__desc">Falafel, guacamole, hummus & everything good.</div>
-            </figcaption>
-          </figure>
 
-          <figure class="dish reveal">
-            <div class="img-wrap dish__img" data-hover>
-              <img src="images/dish-benedict.webp"
-                   alt="Rice bowl with falafel, roasted vegetables and hummus" loading="lazy" />
+            <div class="dish-card is-active" data-dish="1">
+              <div class="dish-card__img">
+                <img src="images/dish-benedict.webp" alt="Rice bowl with falafel, roasted vegetables and hummus" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">Harvest Bowl</div>
+                <div class="dish-card__desc">Rice, falafel, roasted veg & all the good stuff.</div>
+              </div>
             </div>
-            <figcaption>
-              <div class="dish__name">Harvest Bowl</div>
-              <div class="dish__desc">Rice, falafel, roasted veg & all the good stuff.</div>
-            </figcaption>
-          </figure>
 
-          <figure class="dish reveal">
-            <div class="img-wrap dish__img" data-hover>
-              <img src="images/dish-bowl.webp"
-                   alt="Smoothie bowl with watermelon, pomegranate and chia" loading="lazy" />
+            <div class="dish-card is-next" data-dish="2">
+              <div class="dish-card__img">
+                <img src="images/dish-bowl.webp" alt="Smoothie bowl with watermelon, pomegranate and chia" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">Smoothie Bowl</div>
+                <div class="dish-card__desc">Watermelon, walnuts, pomegranate. Breakfast as art.</div>
+              </div>
             </div>
-            <figcaption>
-              <div class="dish__name">Smoothie Bowl</div>
-              <div class="dish__desc">Watermelon, walnuts, pomegranate. Breakfast as art.</div>
-            </figcaption>
-          </figure>
-        </div>
 
-        <div class="dishes__more reveal">
-          <a href="#full-menu" data-hover>See the full menu →</a>
+            <div class="dish-card is-hidden" data-dish="3">
+              <div class="dish-card__img">
+                <img src="images/feeling-detail.webp" alt="Birthday brownie plate with iced cappuccino" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">The Celebration</div>
+                <div class="dish-card__desc">Brownie, iced cappuccino & a moment to remember.</div>
+              </div>
+            </div>
+
+            <div class="dish-card is-hidden" data-dish="4">
+              <div class="dish-card__img">
+                <img src="images/feeling-ambient.webp" alt="Coffee and food spread at 4Stories" loading="lazy" />
+                <span class="dish-card__fav" aria-label="Favorite"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              </div>
+              <div class="dish-card__body">
+                <div class="dish-card__name">The Full Spread</div>
+                <div class="dish-card__desc">Coffee, brunch plates & afternoon vibes.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dishes__controls">
+            <button class="dishes__arrow" id="dishPrev" aria-label="Previous dish">
+              <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <a href="#full-menu" class="dishes__cta" data-hover>
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              See Full Menu
+            </a>
+            <button class="dishes__arrow" id="dishNext" aria-label="Next dish">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -2537,6 +2683,62 @@ Thamel, Kathmandu 44600</div>
         });
       }, { threshold: 0.12 });
       els.forEach(el => observer.observe(el));
+    })();
+
+    /* ─────────────────────────────────────────────────
+       DISH CAROUSEL
+       ───────────────────────────────────────────────── */
+    (function () {
+      const cards = Array.from(document.querySelectorAll('.dish-card'));
+      const prevBtn = document.getElementById('dishPrev');
+      const nextBtn = document.getElementById('dishNext');
+      if (!cards.length || !prevBtn || !nextBtn) return;
+
+      let active = cards.findIndex(c => c.classList.contains('is-active'));
+      if (active < 0) active = 0;
+
+      function layout() {
+        const n = cards.length;
+        cards.forEach((card, i) => {
+          card.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden');
+          if (i === active) card.classList.add('is-active');
+          else if (i === (active - 1 + n) % n) card.classList.add('is-prev');
+          else if (i === (active + 1) % n) card.classList.add('is-next');
+          else card.classList.add('is-hidden');
+        });
+      }
+
+      prevBtn.addEventListener('click', () => {
+        active = (active - 1 + cards.length) % cards.length;
+        layout();
+      });
+      nextBtn.addEventListener('click', () => {
+        active = (active + 1) % cards.length;
+        layout();
+      });
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          const i = cards.indexOf(card);
+          if (i !== active) { active = i; layout(); }
+        });
+      });
+
+      let startX = 0;
+      const track = document.getElementById('dishTrack');
+      if (track) {
+        track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+        track.addEventListener('touchend', e => {
+          const dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 40) {
+            if (dx < 0) { active = (active + 1) % cards.length; }
+            else { active = (active - 1 + cards.length) % cards.length; }
+            layout();
+          }
+        });
+      }
+
+      layout();
     })();
 
     /* ─────────────────────────────────────────────────
