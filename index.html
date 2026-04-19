@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="4Stories — a cafe, eatery & bar in the heart of Thamel, Kathmandu. Four floors. One feeling." />
+  <meta name="theme-color" content="#F9F6F0" />
+  <title>4Stories — Cafe · Eatery · Bar · Thamel, Kathmandu</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────────
+       TOKENS
+       ───────────────────────────────────────────────── */
+    :root {
+      --off-white:   #F9F6F0;
+      --warm-white:  #FDFBF7;
+      --ink:         #1C1916;
+      --stone:       #E4DDD3;
+      --clay:        #B8714E;
+      --clay-light:  #F0E0D6;
+      --muted:       #8A8178;
+      --surface:     #EFEBE4;
+
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      --font-display: "DM Serif Display", serif;
+      --font-body:    "Instrument Sans", system-ui, sans-serif;
+      --font-mono:    "DM Mono", ui-monospace, monospace;
+
+      --max:          1100px;
+    }
+
+    /* ─────────────────────────────────────────────────
+       RESET & BASE
+       ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body {
+      font-family: var(--font-body);
+      font-weight: 300;
+      background: var(--off-white);
+      color: var(--ink);
+      line-height: 1.85;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    @media (hover: none) { body { cursor: auto; } }
+
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; transition: color 300ms var(--ease); }
+    a:hover { color: var(--clay); }
+    button { font: inherit; background: none; border: 0; color: inherit; cursor: none; }
+
+    ::selection { background: var(--clay); color: var(--warm-white); }
+
+    /* ─────────────────────────────────────────────────
+       CUSTOM CURSOR
+       ───────────────────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: rgba(184, 113, 78, 0.8);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 200ms ease, height 200ms ease, background 200ms ease, opacity 200ms ease;
+      z-index: 9999;
+      mix-blend-mode: normal;
+    }
+    #cursor.grow {
+      width: 36px; height: 36px;
+      background: rgba(184, 113, 78, 0.25);
+    }
+    @media (hover: none), (max-width: 768px) { #cursor { display: none; } }
+
+    /* ─────────────────────────────────────────────────
+       REVEAL (Intersection Observer)
+       ───────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 700ms var(--ease),
+        transform 700ms var(--ease);
+      will-change: opacity, transform;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-image {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity 900ms var(--ease),
+        transform 900ms var(--ease);
+    }
+    .reveal-image.visible { opacity: 1; transform: translateY(0); }
+
+    .stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+    .stagger > .reveal:nth-child(2) { transition-delay: 100ms; }
+    .stagger > .reveal:nth-child(3) { transition-delay: 200ms; }
+    .stagger > .reveal:nth-child(4) { transition-delay: 300ms; }
+    .stagger > .reveal:nth-child(5) { transition-delay: 400ms; }
+    .stagger > .reveal:nth-child(6) { transition-delay: 500ms; }
+
+    /* ─────────────────────────────────────────────────
+       SHARED TYPE
+       ───────────────────────────────────────────────── */
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .eyebrow--clay { color: var(--clay); }
+    .display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
+    .display-italic { font-family: var(--font-display); font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    section { position: relative; }
+
+    /* ─────────────────────────────────────────────────
+       IMAGE WRAPPER — warm unifying overlay + slow hover
+       ───────────────────────────────────────────────── */
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--surface);
+    }
+    .img-wrap::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: rgba(28, 25, 22, 0.08);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 800ms var(--ease);
+    }
+    .img-wrap:hover img { transform: scale(1.03); }
+
+    /* ─────────────────────────────────────────────────
+       NAV
+       ───────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 24px 0;
+      background: transparent;
+      transition: background 400ms var(--ease), backdrop-filter 400ms var(--ease), padding 400ms var(--ease);
+    }
+    .nav__inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__brand {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--warm-white);
+      letter-spacing: -0.02em;
+      transition: color 400ms var(--ease);
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+    .nav__links a {
+      color: rgba(249, 246, 240, 0.8);
+      text-transform: capitalize;
+    }
+    .nav__links a:hover { color: var(--warm-white); }
+
+    .nav__cta {
+      display: inline-block;
+      padding: 8px 18px;
+      border: 1px solid rgba(249, 246, 240, 0.7);
+      border-radius: 999px;
+      color: var(--warm-white);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      transition: background 400ms var(--ease), color 400ms var(--ease), border-color 400ms var(--ease);
+    }
+    .nav__cta:hover {
+      background: var(--warm-white);
+      color: var(--ink);
+      border-color: var(--warm-white);
+    }
+
+    /* scrolled state */
+    .nav.is-scrolled {
+      background: rgba(249, 246, 240, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(28, 25, 22, 0.06);
+    }
+    .nav.is-scrolled .nav__brand { color: var(--ink); }
+    .nav.is-scrolled .nav__links a { color: var(--ink); }
+    .nav.is-scrolled .nav__links a:hover { color: var(--clay); }
+    .nav.is-scrolled .nav__cta {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+    .nav.is-scrolled .nav__cta:hover {
+      background: var(--ink);
+      color: var(--warm-white);
+      border-color: var(--ink);
+    }
+
+    /* mobile nav */
+    .nav__burger {
+      display: none;
+      width: 28px; height: 20px;
+      position: relative;
+    }
+    .nav__burger span {
+      position: absolute; left: 0; right: 0;
+      height: 1px;
+      background: var(--warm-white);
+      transition: transform 300ms var(--ease), top 300ms var(--ease), background 300ms var(--ease);
+    }
+    .nav__burger span:nth-child(1) { top: 4px; }
+    .nav__burger span:nth-child(2) { top: 14px; }
+    .nav.is-scrolled .nav__burger span { background: var(--ink); }
+
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px;
+      gap: 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 400ms var(--ease);
+    }
+    .nav-overlay.is-open { opacity: 1; pointer-events: auto; }
+    .nav-overlay a {
+      font-family: var(--font-display);
+      font-size: 64px;
+      color: var(--warm-white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+    }
+    .nav-overlay.is-open a { opacity: 1; transform: translateY(0); }
+    .nav-overlay.is-open a:nth-child(1) { transition-delay: 100ms; }
+    .nav-overlay.is-open a:nth-child(2) { transition-delay: 180ms; }
+    .nav-overlay.is-open a:nth-child(3) { transition-delay: 260ms; }
+    .nav-overlay.is-open a:nth-child(4) { transition-delay: 340ms; }
+    .nav-overlay .nav-overlay__meta {
+      position: absolute;
+      left: 48px; bottom: 48px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: rgba(249, 246, 240, 0.5);
+      letter-spacing: 0.15em;
+      line-height: 1.8;
+    }
+
+    /* ─────────────────────────────────────────────────
+       HERO
+       ───────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      overflow: hidden;
+      color: var(--warm-white);
+    }
+    .hero__bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(28,25,22,0.45) 0%,
+          rgba(28,25,22,0.20) 60%,
+          rgba(28,25,22,0.60) 100%),
+        url("images/hero.jpg") center/cover no-repeat;
+    }
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(249, 246, 240, 0.65);
+      margin-bottom: 28px;
+    }
+    .hero__label::before {
+      content: "";
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: rgba(249, 246, 240, 0.4);
+    }
+    .hero__title { color: var(--warm-white); }
+    .hero__title .l1 {
+      display: block;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(52px, 9vw, 100px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+    }
+    .hero__title .l2 {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(52px, 9vw, 100px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-left: 60px;
+      margin-top: 4px;
+    }
+    .hero__sub {
+      margin-top: 32px;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(249, 246, 240, 0.72);
+      max-width: 320px;
+    }
+    .hero__cta {
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--warm-white);
+      position: relative;
+      align-self: flex-start;
+      padding-bottom: 4px;
+    }
+    .hero__cta::after {
+      content: "";
+      position: absolute; left: 0; bottom: 0;
+      width: 0%; height: 1px;
+      background: var(--warm-white);
+      transition: width 400ms var(--ease);
+    }
+    .hero__cta:hover::after { width: 100%; }
+
+    /* hero staggered entrance */
+    .hero__label, .hero__title .l1, .hero__title .l2, .hero__sub, .hero__cta {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: hero-in 900ms var(--ease) forwards;
+    }
+    .hero__label        { animation-delay: 200ms; }
+    .hero__title .l1    { animation-delay: 400ms; }
+    .hero__title .l2    { animation-delay: 500ms; }
+    .hero__sub          { animation-delay: 800ms; }
+    .hero__cta          { animation-delay: 1000ms; }
+    @keyframes hero-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      width: 1px; height: 40px;
+      background: rgba(249, 246, 240, 0.35);
+      overflow: hidden;
+      z-index: 2;
+    }
+    .hero__scroll::after {
+      content: "";
+      position: absolute; left: 50%;
+      top: -20px;
+      width: 3px; height: 12px;
+      transform: translateX(-50%);
+      background: rgba(249, 246, 240, 0.9);
+      border-radius: 2px;
+      animation: scrollDot 2200ms var(--ease) infinite;
+    }
+    @keyframes scrollDot {
+      0%   { top: -20px; opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { top: 48px; opacity: 0; }
+    }
+
+    /* ─────────────────────────────────────────────────
+       INTRO
+       ───────────────────────────────────────────────── */
+    .intro {
+      background: var(--warm-white);
+      padding: 160px 0;
+      text-align: center;
+    }
+    .intro__lede {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 48px;
+      line-height: 1.2;
+      color: var(--ink);
+      max-width: 640px;
+      margin: 0 auto;
+      letter-spacing: -0.02em;
+    }
+    .intro__body {
+      margin: 48px auto 0;
+      max-width: 480px;
+      font-size: 17px;
+      line-height: 1.85;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* ─────────────────────────────────────────────────
+       FOUR FLOORS — editorial, layered, cinematic
+       ───────────────────────────────────────────────── */
+    .floors {
+      position: relative;
+      background: var(--off-white);
+      padding: 160px 0 0;
+      overflow: hidden;
+    }
+
+    /* section header */
+    .floors__head {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 32px;
+    }
+    .floors__head .eyebrow { display: block; margin-bottom: 28px; }
+    .floors__head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 9vw, 112px);
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+    }
+    .floors__head h2 em {
+      font-style: italic;
+      color: var(--clay);
+      font-weight: 400;
+    }
+
+    /* marquee divider */
+    .floors__marquee {
+      margin: 80px 0 120px;
+      overflow: hidden;
+      border-top: 1px solid var(--stone);
+      border-bottom: 1px solid var(--stone);
+      padding: 24px 0;
+      white-space: nowrap;
+      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    }
+    .floors__marquee-track {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      animation: marquee 42s linear infinite;
+      will-change: transform;
+    }
+    .floors__marquee-track span { color: var(--clay); margin: 0 28px; font-style: normal; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* sticky floor rail (desktop only) */
+    .floors__rail {
+      position: fixed;
+      top: 50%;
+      left: clamp(20px, 2.4vw, 44px);
+      transform: translateY(-50%);
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 600ms var(--ease);
+    }
+    .floors__rail.is-visible { opacity: 1; pointer-events: auto; }
+    .floors__rail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      transition: color 400ms var(--ease);
+    }
+    .floors__rail-item::before {
+      content: "";
+      display: block;
+      width: 8px; height: 1px;
+      background: var(--muted);
+      transition: width 400ms var(--ease), background 400ms var(--ease);
+    }
+    .floors__rail-item.is-active { color: var(--ink); }
+    .floors__rail-item.is-active::before {
+      width: 28px;
+      background: var(--clay);
+    }
+    .floors__rail.on-dark .floors__rail-item { color: rgba(249, 246, 240, 0.55); }
+    .floors__rail.on-dark .floors__rail-item::before { background: rgba(249, 246, 240, 0.35); }
+    .floors__rail.on-dark .floors__rail-item.is-active { color: var(--warm-white); }
+    .floors__rail.on-dark .floors__rail-item.is-active::before { background: var(--clay); }
+
+    /* chapter */
+    .chapter {
+      position: relative;
+      padding: 100px 0;
+    }
+    .chapter__inner {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: center;
+      min-height: 620px;
+    }
+    .chapter--reverse .chapter__media { order: 2; }
+    .chapter--reverse .chapter__body  { order: 1; }
+
+    /* ghost ordinal behind content */
+    .chapter__ghost {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: clamp(220px, 36vw, 460px);
+      color: var(--ink);
+      opacity: 0.055;
+      line-height: 0.8;
+      letter-spacing: -0.05em;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      top: -60px;
+    }
+    .chapter--01 .chapter__ghost { right: -40px; }
+    .chapter--02 .chapter__ghost { left: -40px; }
+    .chapter--03 .chapter__ghost { right: -40px; }
+
+    /* media */
+    .chapter__media {
+      position: relative;
+      height: 620px;
+      z-index: 1;
+    }
+    .chapter__media .img-wrap {
+      width: 100%; height: 100%;
+    }
+    .chapter__media-frame {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .chapter__media-frame::before,
+    .chapter__media-frame::after {
+      content: "";
+      position: absolute;
+      width: 18px; height: 18px;
+      border: 1px solid var(--clay);
+      opacity: 0.75;
+    }
+    .chapter__media-frame::before {
+      top: 14px; left: 14px;
+      border-right: 0; border-bottom: 0;
+    }
+    .chapter__media-frame::after {
+      bottom: 14px; right: 14px;
+      border-left: 0; border-top: 0;
+    }
+
+    /* body */
+    .chapter__body {
+      position: relative;
+      z-index: 2;
+      padding: 0 16px;
+      max-width: 520px;
+    }
+    .chapter:not(.chapter--reverse) .chapter__body {
+      padding-left: 72px;
+      padding-right: 16px;
+    }
+    .chapter--reverse .chapter__body {
+      padding-right: 72px;
+      padding-left: 16px;
+      margin-left: auto;
+    }
+
+    .chapter__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--clay);
+      text-transform: uppercase;
+    }
+    .chapter__eyebrow::after {
+      content: "";
+      display: block;
+      flex: 0 0 56px;
+      height: 1px;
+      background: var(--clay);
+      opacity: 0.55;
+    }
+    .chapter__name {
+      margin-top: 28px;
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5.6vw, 64px);
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 0.98;
+    }
+    .chapter:not(.chapter--reverse) .chapter__name { margin-left: -56px; }
+    .chapter--reverse .chapter__name              { margin-right: -56px; }
+
+    .chapter__tag {
+      margin-top: 18px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(18px, 2vw, 24px);
+      color: var(--muted);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      max-width: 380px;
+    }
+    .chapter__copy {
+      margin-top: 32px;
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 360px;
+    }
+    .chapter__hours {
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .chapter__hours::before {
+      content: "";
+      width: 5px; height: 5px;
+      border-radius: 999px;
+      background: var(--clay);
+      flex: 0 0 5px;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 8px 16px;
+      border: 1px solid var(--stone);
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 12px;
+      color: var(--ink);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .chip--light {
+      border-color: rgba(249, 246, 240, 0.4);
+      color: var(--warm-white);
+      background: rgba(28, 25, 22, 0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: background 400ms var(--ease), color 400ms var(--ease);
+    }
+    .chip--light:hover {
+      background: var(--warm-white);
+      color: var(--ink);
+    }
+
+    /* connector between chapters */
+    .chapter__connector {
+      display: block;
+      width: 1px;
+      height: 120px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, transparent, var(--stone) 40%, var(--stone) 60%, transparent);
+    }
+
+    /* ─── Floor 04 · The Rooftop — poster ─── */
+    .floor-4 {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      overflow: hidden;
+      background: var(--ink);
+      color: var(--warm-white);
+    }
+    .floor-4__bg {
+      position: absolute; inset: 0;
+      background-image: url("images/floor-04-rooftop.jpg");
+      background-size: cover;
+      background-position: center;
+      animation: kenburns 26s ease-in-out infinite alternate;
+    }
+    .floor-4__bg::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(28,25,22,0.25) 0%,
+          rgba(28,25,22,0.45) 45%,
+          rgba(28,25,22,0.85) 100%);
+    }
+    @keyframes kenburns {
+      0%   { transform: scale(1.00) translate(0%, 0%); }
+      100% { transform: scale(1.14) translate(-1.8%, -1.2%); }
+    }
+
+    .floor-4__grid {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 88px 32px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 40px;
+    }
+    .floor-4__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+    }
+    .floor-4__index {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: rgba(249, 246, 240, 0.6);
+      text-transform: uppercase;
+    }
+    .floor-4__index::before {
+      content: "";
+      display: block;
+      width: 40px; height: 1px;
+      background: rgba(249, 246, 240, 0.4);
+    }
+    .floor-4__live {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--warm-white);
+      text-transform: uppercase;
+    }
+    .floor-4__live-dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--clay);
+      position: relative;
+    }
+    .floor-4__live-dot::after {
+      content: "";
+      position: absolute; inset: 0;
+      border-radius: 999px;
+      background: var(--clay);
+      animation: livepulse 1800ms ease-out infinite;
+    }
+    @keyframes livepulse {
+      0%   { transform: scale(1);   opacity: 0.7; }
+      100% { transform: scale(3.2); opacity: 0;   }
+    }
+
+    .floor-4__center {
+      align-self: center;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 48px;
+      align-items: end;
+    }
+    .floor-4__num {
+      font-family: var(--font-display);
+      font-size: clamp(160px, 24vw, 320px);
+      line-height: 0.82;
+      color: transparent;
+      -webkit-text-stroke: 1.2px rgba(249, 246, 240, 0.8);
+      letter-spacing: -0.05em;
+    }
+    .floor-4__copy {
+      padding-bottom: 18px;
+      max-width: 560px;
+    }
+    .floor-4__name {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 96px);
+      color: var(--warm-white);
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+    }
+    .floor-4__tag {
+      margin-top: 20px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(18px, 2.2vw, 26px);
+      color: rgba(249, 246, 240, 0.75);
+      line-height: 1.35;
+    }
+
+    .floor-4__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(249, 246, 240, 0.16);
+    }
+    .floor-4__meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 28px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: rgba(249, 246, 240, 0.6);
+      text-transform: uppercase;
+    }
+    .floor-4__meta span { position: relative; }
+    .floor-4__meta span + span::before {
+      content: "";
+      position: absolute;
+      left: -15px; top: 50%;
+      width: 3px; height: 3px;
+      border-radius: 999px;
+      background: rgba(249, 246, 240, 0.3);
+      transform: translateY(-50%);
+    }
+
+    /* ─────────────────────────────────────────────────
+       SIGNATURE DISHES
+       ───────────────────────────────────────────────── */
+    .dishes {
+      background: var(--clay-light);
+      padding: 140px 0;
+    }
+    .dishes__head {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .dishes__head .eyebrow { display: block; margin-bottom: 20px; }
+    .dishes__head h2 {
+      font-family: var(--font-display);
+      font-size: 52px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      white-space: pre-line;
+    }
+    .dishes__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px 40px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .dish__img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 2px;
+      background: var(--surface);
+    }
+    .dish__name {
+      margin-top: 20px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .dish__desc {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .dishes__more {
+      margin-top: 64px;
+      text-align: center;
+    }
+    .dishes__more a {
+      font-size: 14px;
+      color: var(--clay);
+      font-weight: 400;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .dishes__more a::after {
+      content: "";
+      position: absolute; left: 0; bottom: 0;
+      width: 0%; height: 1px;
+      background: var(--clay);
+      transition: width 400ms var(--ease);
+    }
+    .dishes__more a:hover::after { width: 100%; }
+
+    /* ─────────────────────────────────────────────────
+       FEELING — editorial spread
+       ───────────────────────────────────────────────── */
+    .feeling {
+      position: relative;
+      background: var(--ink);
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .feeling__grid {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 60% 40%;
+    }
+    .feeling__grid .img-wrap { height: 100%; }
+    .feeling__grid .img-wrap::after {
+      background:
+        radial-gradient(ellipse at center,
+          transparent 20%,
+          rgba(28,25,22,0.6) 100%);
+    }
+    .feeling__grid img { width: 100%; height: 100%; object-fit: cover; }
+
+    .feeling__quote {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 120px 32px;
+      text-align: center;
+      color: var(--warm-white);
+    }
+    .feeling__quote blockquote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 38px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--warm-white);
+      white-space: pre-line;
+    }
+    .feeling__quote cite {
+      display: block;
+      margin-top: 24px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      font-style: normal;
+      letter-spacing: 0.2em;
+      color: rgba(249, 246, 240, 0.5);
+      text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────────────────
+       TESTIMONIALS
+       ───────────────────────────────────────────────── */
+    .voices {
+      background: var(--warm-white);
+      padding: 140px 0;
+    }
+    .voices__head {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .voices__head .eyebrow { display: block; margin-bottom: 32px; }
+    .voices__hero {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 36px;
+      line-height: 1.35;
+      color: var(--ink);
+      max-width: 700px;
+      margin: 0 auto;
+      letter-spacing: -0.02em;
+    }
+    .voices__cite {
+      display: block;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .voices__rule {
+      width: 80px; height: 1px;
+      background: var(--stone);
+      margin: 80px auto 60px;
+    }
+    .voices__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 56px;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .voice__quote {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .voice__name {
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .voice__dots {
+      margin-top: 12px;
+      display: flex;
+      gap: 5px;
+    }
+    .voice__dots span {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--clay);
+      display: block;
+    }
+
+    /* ─────────────────────────────────────────────────
+       VISIT
+       ───────────────────────────────────────────────── */
+    .visit {
+      background: var(--off-white);
+      padding: 140px 0;
+    }
+    .visit__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .visit__map {
+      overflow: hidden;
+      border-radius: 2px;
+      position: relative;
+      background: var(--surface);
+    }
+    .visit__map iframe {
+      display: block;
+      width: 100%;
+      height: 440px;
+      border: 0;
+      filter: grayscale(0.3) contrast(1.08);
+    }
+    .visit__map::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: rgba(28, 25, 22, 0.06);
+      pointer-events: none;
+    }
+
+    .visit__body {
+      padding-left: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .visit__title {
+      font-family: var(--font-display);
+      font-size: 44px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .visit__list {
+      margin-top: 40px;
+      list-style: none;
+    }
+    .visit__list li {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .visit__list li:first-child { border-top: 1px solid var(--stone); }
+    .visit__label {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .visit__value {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--ink);
+    }
+    .visit__value a:hover { color: var(--clay); }
+
+    .visit__cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+      height: 56px;
+      width: 100%;
+      border: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .visit__cta span { position: relative; z-index: 2; transition: color 400ms var(--ease); }
+    .visit__cta::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 100%;
+      background: var(--ink);
+      transform: translateX(-101%);
+      transition: transform 500ms var(--ease);
+      z-index: 1;
+    }
+    .visit__cta:hover::before { transform: translateX(0); }
+    .visit__cta:hover span { color: var(--warm-white); }
+
+    /* ─────────────────────────────────────────────────
+       FOOTER
+       ───────────────────────────────────────────────── */
+    .foot {
+      background: var(--ink);
+      color: var(--warm-white);
+      padding: 80px 0 48px;
+    }
+    .foot__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .foot__brand {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--warm-white);
+      letter-spacing: -0.02em;
+    }
+    .foot__tag {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(249, 246, 240, 0.45);
+    }
+    .foot__links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+    .foot__links a {
+      font-size: 13px;
+      color: rgba(249, 246, 240, 0.6);
+      font-weight: 300;
+    }
+    .foot__links a:hover { color: rgba(249, 246, 240, 1); }
+    .foot__addr {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 12px;
+      color: rgba(249, 246, 240, 0.45);
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+    .foot__bottom {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(138, 129, 120, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 11px;
+      color: rgba(249, 246, 240, 0.3);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─────────────────────────────────────────────────
+       RESPONSIVE
+       ───────────────────────────────────────────────── */
+    @media (max-width: 1200px) {
+      .floors__rail { display: none; }
+    }
+    @media (max-width: 900px) {
+      .voices__grid { grid-template-columns: 1fr; gap: 48px; }
+      .dishes__grid { grid-template-columns: 1fr; gap: 48px; max-width: 420px; }
+      .feeling__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      #cursor { display: none; }
+
+      .nav__links { display: none; }
+      .nav__burger { display: block; cursor: pointer; }
+
+      .container { padding: 0 24px; }
+
+      .hero { min-height: 560px; }
+      .hero__title .l1,
+      .hero__title .l2 {
+        font-size: 52px;
+      }
+      .hero__title .l2 { margin-left: 24px; }
+      .hero__sub { font-size: 15px; }
+
+      .intro { padding: 80px 24px; }
+      .intro__lede { font-size: 30px; }
+      .intro__body { font-size: 16px; }
+
+      .floors { padding: 80px 0 0; }
+      .floors__head { padding: 0 24px; }
+      .floors__head h2 { font-size: 44px; }
+      .floors__marquee { margin: 56px 0 64px; padding: 18px 0; }
+      .floors__marquee-track { font-size: 22px; }
+
+      .chapter { padding: 48px 0; }
+      .chapter__inner {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        gap: 24px;
+        padding: 0 24px;
+      }
+      .chapter--reverse .chapter__media { order: 1; }
+      .chapter--reverse .chapter__body  { order: 2; }
+      .chapter__media { height: 380px; }
+      .chapter__body,
+      .chapter:not(.chapter--reverse) .chapter__body,
+      .chapter--reverse .chapter__body {
+        padding: 0;
+        max-width: 100%;
+      }
+      .chapter__ghost {
+        font-size: 140px;
+        top: -12px;
+        opacity: 0.07;
+      }
+      .chapter--01 .chapter__ghost { right: -8px; }
+      .chapter--02 .chapter__ghost { left: -8px; }
+      .chapter--03 .chapter__ghost { right: -8px; }
+      .chapter:not(.chapter--reverse) .chapter__name,
+      .chapter--reverse .chapter__name {
+        margin-left: 0;
+        margin-right: 0;
+      }
+      .chapter__name { font-size: 34px; }
+      .chapter__tag { font-size: 18px; }
+      .chapter__media-frame::before,
+      .chapter__media-frame::after { width: 12px; height: 12px; }
+
+      .chapter__connector { height: 56px; }
+
+      .floor-4 { height: auto; min-height: 640px; }
+      .floor-4__grid { padding: 72px 24px; gap: 28px; }
+      .floor-4__top { gap: 16px; flex-wrap: wrap; }
+      .floor-4__center {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+      .floor-4__num { font-size: 140px; line-height: 0.85; }
+      .floor-4__name { font-size: 44px; }
+      .floor-4__tag { font-size: 18px; }
+      .floor-4__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .floor-4__meta { gap: 20px; font-size: 10px; }
+
+      .dishes { padding: 80px 24px; }
+      .dishes__head h2 { font-size: 34px; }
+      .dishes__grid { grid-template-columns: 1fr; gap: 48px; }
+
+      .feeling { min-height: auto; }
+      .feeling__grid {
+        position: relative;
+        inset: auto;
+        grid-template-columns: 1fr 1fr;
+        height: 280px;
+      }
+      .feeling__quote { position: relative; padding: 64px 24px; }
+      .feeling__quote blockquote { font-size: 26px; }
+
+      .voices { padding: 80px 24px; }
+      .voices__hero { font-size: 26px; }
+      .voices__grid { padding: 0; }
+
+      .visit { padding: 80px 24px; }
+      .visit__grid { grid-template-columns: 1fr; gap: 40px; }
+      .visit__body { padding-left: 0; }
+      .visit__title { font-size: 34px; }
+      .visit__map iframe { height: 320px; }
+
+      .foot { padding: 64px 24px 32px; }
+      .foot__grid { grid-template-columns: 1fr; gap: 32px; text-align: left; }
+      .foot__links { align-items: flex-start; }
+      .foot__addr { text-align: left; }
+      .foot__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+      .nav-overlay a { font-size: 44px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Custom cursor -->
+  <div id="cursor" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#top" class="nav__brand" data-hover>4Stories</a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#floors" data-hover>Menu</a>
+        <a href="#floors" data-hover>Floors</a>
+        <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="nav__cta" data-hover>Reserve</a>
+      </nav>
+
+      <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile overlay -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true">
+    <a href="#floors" data-nav-close>Menu</a>
+    <a href="#floors" data-nav-close>Floors</a>
+    <a href="#visit" data-nav-close>Reserve</a>
+    <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-nav-close>Instagram</a>
+    <div class="nav-overlay__meta">SAAT GHUMTI MARG<br/>THAMEL · KATHMANDU<br/>7 AM — 2 AM</div>
+  </div>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__content">
+        <div class="hero__label">Thamel · Kathmandu</div>
+        <h1 class="hero__title">
+          <span class="l1">Four floors.</span>
+          <span class="l2">One feeling.</span>
+        </h1>
+        <p class="hero__sub">A cafe, eatery &amp; bar in the heart of Thamel.</p>
+        <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="hero__cta" data-hover>Reserve a table ↗</a>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"></div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="intro">
+      <div class="container">
+        <p class="intro__lede reveal">Not just a meal. A moment you come back for.</p>
+        <p class="intro__body reveal" style="transition-delay:120ms">
+          Spread across four floors in the middle of Thamel's chaos — each level its own world.
+          Coffee at dawn. Brunch that lingers. Dinner that turns into cocktails.
+          And a rooftop where the city disappears.
+        </p>
+      </div>
+    </section>
+
+    <!-- FOUR FLOORS -->
+    <section class="floors" id="floors">
+      <!-- Sticky floor rail (desktop) -->
+      <nav class="floors__rail" id="floorRail" aria-label="Floor index">
+        <a href="#floor-01" class="floors__rail-item" data-rail="01">01</a>
+        <a href="#floor-02" class="floors__rail-item" data-rail="02">02</a>
+        <a href="#floor-03" class="floors__rail-item" data-rail="03">03</a>
+        <a href="#floor-04" class="floors__rail-item" data-rail="04">04</a>
+      </nav>
+
+      <!-- Section header -->
+      <header class="floors__head">
+        <span class="eyebrow reveal">01 / The Building</span>
+        <h2 class="reveal" style="transition-delay:120ms">Four <em>stories.</em></h2>
+      </header>
+
+      <!-- Marquee divider -->
+      <div class="floors__marquee reveal" aria-hidden="true">
+        <div class="floors__marquee-track">
+          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
+          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
+          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
+          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
+        </div>
+      </div>
+
+      <!-- Floor 01 -->
+      <article class="chapter chapter--01" id="floor-01" data-floor="01">
+        <div class="chapter__inner">
+          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">01</div>
+
+          <div class="chapter__media">
+            <div class="img-wrap reveal-image" data-hover>
+              <img src="images/floor-01-coffee.jpg"
+                   alt="Two lattes on a 4Stories branded wooden tile" loading="lazy" />
+            </div>
+            <div class="chapter__media-frame" aria-hidden="true"></div>
+          </div>
+
+          <div class="chapter__body stagger" data-parallax="0.04">
+            <div class="chapter__eyebrow reveal">Floor 01</div>
+            <h3 class="chapter__name reveal">The Coffee Bar</h3>
+            <p class="chapter__tag reveal">Where every morning begins.</p>
+            <p class="chapter__copy reveal">
+              Ground floor. The entry. The smell of espresso before you've said a word.
+              Pull up a stool, open your notebook, let Kathmandu wait outside.
+            </p>
+            <div class="chapter__hours reveal">7 AM onwards</div>
+          </div>
+        </div>
+      </article>
+
+      <span class="chapter__connector" aria-hidden="true"></span>
+
+      <!-- Floor 02 -->
+      <article class="chapter chapter--reverse chapter--02" id="floor-02" data-floor="02">
+        <div class="chapter__inner">
+          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">02</div>
+
+          <div class="chapter__media">
+            <div class="img-wrap reveal-image" data-hover>
+              <img src="images/floor-02-brunch.jpg"
+                   alt="A poached egg stack with guacamole, corn and chili sauce" loading="lazy" />
+            </div>
+            <div class="chapter__media-frame" aria-hidden="true"></div>
+          </div>
+
+          <div class="chapter__body stagger" data-parallax="0.04">
+            <div class="chapter__eyebrow reveal">Floor 02</div>
+            <h3 class="chapter__name reveal">The Brunch Table</h3>
+            <p class="chapter__tag reveal">The meal that turns into conversation.</p>
+            <p class="chapter__copy reveal">
+              Acai bowls. Wild mushroom toast. Blueberry matcha that people order twice.
+              The second floor is unhurried — a place for mornings that stretch into afternoons.
+            </p>
+            <div class="chapter__hours reveal">9 AM – 4 PM</div>
+          </div>
+        </div>
+      </article>
+
+      <span class="chapter__connector" aria-hidden="true"></span>
+
+      <!-- Floor 03 -->
+      <article class="chapter chapter--03" id="floor-03" data-floor="03">
+        <div class="chapter__inner">
+          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">03</div>
+
+          <div class="chapter__media">
+            <div class="img-wrap reveal-image" data-hover>
+              <img src="images/floor-03-dining.jpg"
+                   alt="A platter of wood-fired pizza and steamed dumplings" loading="lazy" />
+            </div>
+            <div class="chapter__media-frame" aria-hidden="true"></div>
+          </div>
+
+          <div class="chapter__body stagger" data-parallax="0.04">
+            <div class="chapter__eyebrow reveal">Floor 03</div>
+            <h3 class="chapter__name reveal">The Dining Room</h3>
+            <p class="chapter__tag reveal">Flavors from here and everywhere.</p>
+            <p class="chapter__copy reveal">
+              Tofu tacos alongside Nepali classics. Pizza from a real kitchen.
+              Food that surprises you regardless of where you're from. The third floor is where
+              you come for dinner and stay for the music.
+            </p>
+            <div class="chapter__hours reveal">12 PM – 11 PM</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Floor 04 — The Rooftop · poster -->
+      <section class="floor-4" id="floor-04" data-floor="04" data-hover>
+        <div class="floor-4__bg" aria-hidden="true"></div>
+
+        <div class="floor-4__grid">
+          <div class="floor-4__top">
+            <div class="floor-4__index reveal">The Rooftop · 04 / 04</div>
+            <div class="floor-4__live reveal" style="transition-delay:120ms">
+              <span class="floor-4__live-dot" aria-hidden="true"></span>
+              Live · Tonight
+            </div>
+          </div>
+
+          <div class="floor-4__center">
+            <div class="floor-4__num reveal" aria-hidden="true">04</div>
+            <div class="floor-4__copy stagger">
+              <h3 class="floor-4__name reveal">The Rooftop</h3>
+              <p class="floor-4__tag reveal">Thamel from above. Cocktails. Live music. Tonight.</p>
+            </div>
+          </div>
+
+          <div class="floor-4__bottom">
+            <div class="floor-4__meta reveal">
+              <span>5 PM — 2 AM</span>
+              <span>Cocktails</span>
+              <span>Live Music</span>
+              <span>Hookah</span>
+            </div>
+            <a href="https://wa.me/9779808790813" target="_blank" rel="noopener"
+               class="chip chip--light reveal" style="transition-delay:120ms" data-hover>
+              Book the rooftop ↗
+            </a>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- SIGNATURE DISHES -->
+    <section class="dishes">
+      <div class="container">
+        <div class="dishes__head">
+          <span class="eyebrow eyebrow--clay reveal">The Menu</span>
+          <h2 class="reveal" style="transition-delay:120ms">A few things
+people come back for.</h2>
+        </div>
+
+        <div class="dishes__grid stagger">
+          <figure class="dish reveal">
+            <div class="img-wrap dish__img" data-hover>
+              <img src="images/dish-matcha.jpg"
+                   alt="Matcha latte with heart-shaped latte art" loading="lazy" />
+            </div>
+            <figcaption>
+              <div class="dish__name">Blueberry Matcha</div>
+              <div class="dish__desc">The one everyone orders twice.</div>
+            </figcaption>
+          </figure>
+
+          <figure class="dish reveal">
+            <div class="img-wrap dish__img" data-hover>
+              <img src="images/dish-benedict.jpg"
+                   alt="Eggs Benedict on sourdough dressed with pistachios" loading="lazy" />
+            </div>
+            <figcaption>
+              <div class="dish__name">Eggs Benedict</div>
+              <div class="dish__desc">The plate that starts your day twice.</div>
+            </figcaption>
+          </figure>
+
+          <figure class="dish reveal">
+            <div class="img-wrap dish__img" data-hover>
+              <img src="images/dish-bowl.jpg"
+                   alt="Smoothie bowl with watermelon, pomegranate and chia" loading="lazy" />
+            </div>
+            <figcaption>
+              <div class="dish__name">Smoothie Bowl</div>
+              <div class="dish__desc">Watermelon, walnuts, pomegranate. Breakfast as art.</div>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="dishes__more reveal">
+          <a href="#floors" data-hover>See the full menu →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEELING -->
+    <section class="feeling" aria-label="Editorial spread">
+      <div class="feeling__grid" aria-hidden="true">
+        <div class="img-wrap">
+          <img src="images/feeling-ambient.jpg"
+               alt="Sculptural ceiling over cream sofas and warm lighting" loading="lazy" />
+        </div>
+        <div class="img-wrap">
+          <img src="images/feeling-detail.jpg"
+               alt="A brownie with 'Happy Birthday' written in chocolate" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="feeling__quote">
+        <blockquote class="reveal">The atmosphere is so sexy,
+the food is amazing.</blockquote>
+        <cite class="reveal" style="transition-delay:120ms">— TripAdvisor, 2024</cite>
+      </div>
+    </section>
+
+    <!-- VOICES -->
+    <section class="voices">
+      <div class="container">
+        <div class="voices__head">
+          <span class="eyebrow reveal">Stories from our guests</span>
+          <p class="voices__hero reveal" style="transition-delay:120ms">
+            "I was in Kathmandu for 30 days. I ate here six times."
+          </p>
+          <span class="voices__cite reveal" style="transition-delay:220ms">
+            TripAdvisor guest · Verified review
+          </span>
+        </div>
+
+        <div class="voices__rule reveal"></div>
+      </div>
+
+      <div class="voices__grid stagger">
+        <figure class="voice reveal">
+          <p class="voice__quote">"Incredible food, service, and ambience where you can relax away from the hustle of Thamel. 10/10"</p>
+          <figcaption class="voice__name">— Jordan T.</figcaption>
+          <div class="voice__dots" aria-label="5 star rating"><span></span><span></span><span></span><span></span><span></span></div>
+        </figure>
+        <figure class="voice reveal">
+          <p class="voice__quote">"A chill, vibe place with sit down cushions, ambient tunes and great food. Bikram was a consummate host."</p>
+          <figcaption class="voice__name">— James M.</figcaption>
+          <div class="voice__dots" aria-label="5 star rating"><span></span><span></span><span></span><span></span><span></span></div>
+        </figure>
+        <figure class="voice reveal">
+          <p class="voice__quote">"Best brunch we had in all of Nepal. We came back the next morning and the morning after that."</p>
+          <figcaption class="voice__name">— Sarah K.</figcaption>
+          <div class="voice__dots" aria-label="5 star rating"><span></span><span></span><span></span><span></span><span></span></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- VISIT -->
+    <section class="visit" id="visit">
+      <div class="container">
+        <div class="visit__grid">
+          <div class="visit__map reveal-image" data-hover>
+            <iframe
+              title="4Stories location on Google Maps"
+              src="https://maps.google.com/maps?q=4Stories%20Thamel%20Kathmandu&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+
+          <div class="visit__body stagger">
+            <h2 class="visit__title reveal">Come find us.</h2>
+
+            <ul class="visit__list">
+              <li class="reveal">
+                <span class="visit__label">Address</span>
+                <span class="visit__value">Saat Ghumti Marg, Thamel, Kathmandu 44600</span>
+              </li>
+              <li class="reveal">
+                <span class="visit__label">Hours</span>
+                <span class="visit__value">Open daily, 7 AM – 2 AM</span>
+              </li>
+              <li class="reveal">
+                <span class="visit__label">Instagram</span>
+                <span class="visit__value"><a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>@4stories.np</a></span>
+              </li>
+            </ul>
+
+            <a class="visit__cta reveal" href="https://wa.me/9779808790813" target="_blank" rel="noopener" data-hover>
+              <span>Reserve via WhatsApp ↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div class="container">
+      <div class="foot__grid">
+        <div class="reveal">
+          <div class="foot__brand">4Stories</div>
+          <div class="foot__tag">Cafe · Eatery · Bar · Thamel</div>
+        </div>
+
+        <nav class="foot__links reveal" aria-label="Footer">
+          <a href="#floors" data-hover>Menu</a>
+          <a href="#floors" data-hover>Floors</a>
+          <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" data-hover>Reserve</a>
+          <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>Instagram</a>
+        </nav>
+
+        <div class="foot__addr reveal">Saat Ghumti Marg
+Thamel, Kathmandu</div>
+      </div>
+
+      <div class="foot__bottom">
+        <span>© 2025 4Stories</span>
+        <span>Made with intention.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─────────────────────────────────────────────────
+       CUSTOM CURSOR
+       ───────────────────────────────────────────────── */
+    (function () {
+      const cursor = document.getElementById('cursor');
+      if (!cursor || window.matchMedia('(hover: none)').matches) return;
+
+      let x = window.innerWidth / 2, y = window.innerHeight / 2;
+      let tx = x, ty = y;
+
+      window.addEventListener('mousemove', (e) => {
+        tx = e.clientX; ty = e.clientY;
+      });
+
+      function tick() {
+        x += (tx - x) * 0.22;
+        y += (ty - y) * 0.22;
+        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        requestAnimationFrame(tick);
+      }
+      tick();
+
+      const hoverTargets = 'a, button, img, iframe, [data-hover], .img-wrap';
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(hoverTargets)) cursor.classList.add('grow');
+      });
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(hoverTargets)) cursor.classList.remove('grow');
+      });
+      window.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+      window.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+    })();
+
+    /* ─────────────────────────────────────────────────
+       NAV SCROLL STATE
+       ───────────────────────────────────────────────── */
+    (function () {
+      const nav = document.getElementById('nav');
+      const onScroll = () => {
+        if (window.scrollY > 80) nav.classList.add('is-scrolled');
+        else nav.classList.remove('is-scrolled');
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    /* ─────────────────────────────────────────────────
+       MOBILE OVERLAY
+       ───────────────────────────────────────────────── */
+    (function () {
+      const burger = document.getElementById('burger');
+      const overlay = document.getElementById('navOverlay');
+      if (!burger || !overlay) return;
+
+      const close = () => {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      };
+      const toggle = () => {
+        const open = overlay.classList.toggle('is-open');
+        overlay.setAttribute('aria-hidden', open ? 'false' : 'true');
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+      };
+      burger.addEventListener('click', toggle);
+      overlay.querySelectorAll('[data-nav-close]').forEach(el => el.addEventListener('click', close));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    })();
+
+    /* ─────────────────────────────────────────────────
+       REVEAL ON SCROLL
+       ───────────────────────────────────────────────── */
+    (function () {
+      const els = document.querySelectorAll('.reveal, .reveal-image');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(el => {
+          if (el.isIntersecting) {
+            el.target.classList.add('visible');
+            observer.unobserve(el.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      els.forEach(el => observer.observe(el));
+    })();
+
+    /* ─────────────────────────────────────────────────
+       SUBTLE PARALLAX — [data-parallax="0.04"]
+       ───────────────────────────────────────────────── */
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.matchMedia('(hover: none)').matches) return;
+      const els = document.querySelectorAll('[data-parallax]');
+      if (!els.length) return;
+
+      let ticking = false;
+      function update() {
+        const vh = window.innerHeight;
+        els.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.bottom < -200 || rect.top > vh + 200) return;
+          const center = rect.top + rect.height / 2;
+          const offset = center - vh / 2;
+          const factor = parseFloat(el.dataset.parallax) || 0;
+          const translate = offset * factor * -1;
+          el.style.transform = `translate3d(0, ${translate.toFixed(1)}px, 0)`;
+        });
+        ticking = false;
+      }
+      function onScroll() {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      update();
+    })();
+
+    /* ─────────────────────────────────────────────────
+       FLOOR RAIL — sticky index with active floor tracking
+       ───────────────────────────────────────────────── */
+    (function () {
+      const rail = document.getElementById('floorRail');
+      const floorsSection = document.getElementById('floors');
+      if (!rail || !floorsSection || !('IntersectionObserver' in window)) return;
+
+      const items = rail.querySelectorAll('.floors__rail-item');
+      const floors = floorsSection.querySelectorAll('[data-floor]');
+
+      // Show/hide the rail when the floors section is in the viewport
+      const sectionObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => rail.classList.toggle('is-visible', e.isIntersecting));
+      }, { threshold: 0, rootMargin: '-80px 0px -80px 0px' });
+      sectionObs.observe(floorsSection);
+
+      // Track which floor is nearest viewport center
+      const setActive = (id) => {
+        items.forEach(i => i.classList.toggle('is-active', i.dataset.rail === id));
+        rail.classList.toggle('on-dark', id === '04');
+      };
+      const floorObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) setActive(e.target.dataset.floor);
+        });
+      }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+      floors.forEach(f => floorObs.observe(f));
+
+      // Smooth scroll on click (offset for fixed nav)
+      items.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(item.getAttribute('href'));
+          if (!target) return;
+          const y = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
