@@ -761,87 +761,100 @@
     .hero__bg {
       position: absolute; inset: 0;
       background:
-        linear-gradient(to bottom,
-          rgba(28,25,22,0.58) 0%,
-          rgba(28,25,22,0.32) 40%,
-          rgba(28,25,22,0.72) 100%),
         url("images/hero.webp") center/cover no-repeat;
+    }
+    .hero__bg::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(28,25,22,0.45) 0%,
+          rgba(28,25,22,0.15) 35%,
+          rgba(28,25,22,0.55) 70%,
+          rgba(28,25,22,0.88) 100%);
     }
     .hero__content {
       position: relative;
       z-index: 2;
       height: 100%;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 0 32px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 120px;
     }
     .hero__label {
       display: inline-flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
       font-family: var(--font-mono);
-      font-weight: 300;
+      font-weight: 400;
       font-size: 11px;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(249, 246, 240, 0.6);
-      margin-bottom: 32px;
+      color: rgba(249, 246, 240, 0.7);
+      margin-bottom: 28px;
+      padding: 8px 20px;
+      border: 1px solid rgba(249, 246, 240, 0.18);
+      border-radius: 24px;
+      backdrop-filter: blur(8px);
+      background: rgba(249, 246, 240, 0.06);
     }
-    .hero__label::before {
-      content: "";
-      display: inline-block;
-      width: 36px; height: 1px;
-      background: rgba(249, 246, 240, 0.35);
+    .hero__label-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--clay);
     }
     .hero__title { color: var(--warm-white); }
     .hero__title .l1 {
       display: block;
       font-family: var(--font-display);
       font-style: italic;
-      font-size: clamp(56px, 10vw, 120px);
+      font-size: clamp(52px, 9vw, 110px);
       line-height: 0.95;
       letter-spacing: -0.03em;
     }
     .hero__title .l2 {
       display: block;
       font-family: var(--font-display);
-      font-size: clamp(56px, 10vw, 120px);
+      font-size: clamp(52px, 9vw, 110px);
       line-height: 0.95;
       letter-spacing: -0.03em;
-      margin-left: 72px;
       margin-top: 4px;
     }
     .hero__sub {
-      margin-top: 36px;
+      margin-top: 28px;
       font-weight: 300;
       font-size: 17px;
       line-height: 1.65;
-      color: rgba(249, 246, 240, 0.68);
-      max-width: 340px;
+      color: rgba(249, 246, 240, 0.65);
+      max-width: 380px;
     }
     .hero__ctas {
-      margin-top: 44px;
+      margin-top: 40px;
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 24px;
       flex-wrap: wrap;
+      justify-content: center;
     }
     .hero__cta-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       height: 52px;
-      padding: 0 36px;
+      padding: 0 40px;
       background: var(--clay);
       color: var(--warm-white);
       font-family: var(--font-body);
       font-weight: 500;
       font-size: 14px;
       letter-spacing: 0.04em;
-      border-radius: 6px;
+      border-radius: 28px;
       transition: background 300ms var(--ease), transform 200ms var(--ease), box-shadow 300ms var(--ease);
     }
     .hero__cta-primary:hover {
@@ -851,20 +864,25 @@
       box-shadow: 0 8px 28px rgba(184, 113, 78, 0.35);
     }
     .hero__cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      padding: 0 40px;
       font-size: 14px;
-      color: rgba(249, 246, 240, 0.8);
-      position: relative;
-      padding-bottom: 3px;
+      font-weight: 500;
+      color: rgba(249, 246, 240, 0.85);
+      border: 1px solid rgba(249, 246, 240, 0.25);
+      border-radius: 28px;
+      backdrop-filter: blur(6px);
+      background: rgba(249, 246, 240, 0.05);
+      transition: all 300ms var(--ease);
     }
-    .hero__cta-secondary::after {
-      content: "";
-      position: absolute; left: 0; bottom: 0;
-      width: 0%; height: 1px;
-      background: rgba(249, 246, 240, 0.6);
-      transition: width 400ms var(--ease);
+    .hero__cta-secondary:hover {
+      color: var(--warm-white);
+      border-color: rgba(249, 246, 240, 0.5);
+      background: rgba(249, 246, 240, 0.1);
     }
-    .hero__cta-secondary:hover { color: var(--warm-white); }
-    .hero__cta-secondary:hover::after { width: 100%; }
 
     /* hero staggered entrance */
     .hero__label, .hero__title .l1, .hero__title .l2, .hero__sub, .hero__ctas {
@@ -885,26 +903,25 @@
       position: absolute;
       bottom: 36px; left: 50%;
       transform: translateX(-50%);
-      width: 1px; height: 44px;
-      background: rgba(249, 246, 240, 0.25);
-      overflow: hidden;
+      width: 24px; height: 40px;
+      border: 1.5px solid rgba(249, 246, 240, 0.3);
+      border-radius: 12px;
       z-index: 2;
     }
     .hero__scroll::after {
       content: "";
-      position: absolute; left: 50%;
-      top: -20px;
-      width: 3px; height: 12px;
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 3px; height: 8px;
       transform: translateX(-50%);
-      background: rgba(249, 246, 240, 0.85);
+      background: rgba(249, 246, 240, 0.7);
       border-radius: 2px;
       animation: scrollDot 2200ms var(--ease) infinite;
     }
     @keyframes scrollDot {
-      0%   { top: -20px; opacity: 0; }
-      20%  { opacity: 1; }
-      80%  { opacity: 1; }
-      100% { top: 52px; opacity: 0; }
+      0%   { top: 6px; opacity: 1; }
+      100% { top: 24px; opacity: 0; }
     }
 
     /* ─────────────────────────────────────────────────
@@ -1681,14 +1698,15 @@
       .container { padding: 0 24px; }
 
       .hero { min-height: 560px; }
+      .hero__content { padding-bottom: 100px; }
       .hero__title .l1,
       .hero__title .l2 {
-        font-size: 48px;
+        font-size: 44px;
       }
-      .hero__title .l2 { margin-left: 20px; }
       .hero__sub { font-size: 15px; }
-      .hero__ctas { gap: 20px; }
-      .hero__cta-primary { height: 48px; padding: 0 28px; font-size: 13px; }
+      .hero__ctas { gap: 16px; flex-direction: column; }
+      .hero__cta-primary { height: 48px; padding: 0 32px; font-size: 13px; }
+      .hero__cta-secondary { height: 48px; padding: 0 32px; font-size: 13px; }
 
       .intro { padding: 80px 24px; }
       .intro__lede { font-size: 30px; }
@@ -1794,7 +1812,7 @@
     <section class="hero">
       <div class="hero__bg" aria-hidden="true"></div>
       <div class="hero__content">
-        <div class="hero__label">Thamel · Kathmandu</div>
+        <div class="hero__label"><span class="hero__label-dot"></span> Thamel · Kathmandu</div>
         <h1 class="hero__title">
           <span class="l1">Four floors.</span>
           <span class="l2">One feeling.</span>
@@ -1802,7 +1820,7 @@
         <p class="hero__sub">A cafe, eatery &amp; bar in the heart of Thamel.</p>
         <div class="hero__ctas">
           <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="hero__cta-primary" data-hover>Reserve a Table</a>
-          <a href="#full-menu" class="hero__cta-secondary" data-hover>Explore the Menu ↓</a>
+          <a href="#full-menu" class="hero__cta-secondary" data-hover>Explore the Menu</a>
         </div>
       </div>
       <div class="hero__scroll" aria-hidden="true"></div>
