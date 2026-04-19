@@ -3,9 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="4Stories — a cafe, eatery & bar in the heart of Thamel, Kathmandu. Four floors. One feeling." />
+  <meta name="description" content="4Stories — a cafe, eatery & bar in the heart of Thamel, Kathmandu. Four floors. One feeling. Coffee, brunch, dinner & rooftop cocktails." />
   <meta name="theme-color" content="#F9F6F0" />
   <title>4Stories — Cafe · Eatery · Bar · Thamel, Kathmandu</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>4</text></svg>" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="4Stories — Cafe · Eatery · Bar · Thamel" />
+  <meta property="og:description" content="Four floors. One feeling. Coffee at dawn, brunch that lingers, dinner that turns into cocktails, and a rooftop where the city disappears." />
+  <meta property="og:image" content="images/hero.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="4Stories — Thamel, Kathmandu" />
+  <meta name="twitter:description" content="Four floors. One feeling. A cafe, eatery & bar in the heart of Thamel." />
+  <meta name="twitter:image" content="images/hero.jpg" />
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "4Stories",
+    "description": "A cafe, eatery & bar spread across four floors in the heart of Thamel, Kathmandu.",
+    "image": "images/hero.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Saat Ghumti Marg",
+      "addressLocality": "Thamel, Kathmandu",
+      "postalCode": "44600",
+      "addressCountry": "NP"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 27.7142,
+      "longitude": 85.3123
+    },
+    "telephone": "+977-9808790813",
+    "openingHours": "Mo-Su 07:00-02:00",
+    "servesCuisine": ["Cafe", "International", "Nepali", "Brunch"],
+    "priceRange": "$$",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.4",
+      "reviewCount": "1109",
+      "bestRating": "5"
+    },
+    "sameAs": [
+      "https://instagram.com/4stories.np",
+      "https://www.tripadvisor.com/Restaurant_Review-g293890-d25031794-Reviews-4STORIES-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -147,9 +200,247 @@
     .img-wrap img {
       width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 800ms var(--ease);
+      transition: transform 800ms var(--ease), filter 600ms var(--ease);
     }
-    .img-wrap:hover img { transform: scale(1.03); }
+    .img-wrap:hover img { transform: scale(1.05); filter: brightness(1.05); }
+
+    /* ─────────────────────────────────────────────────
+       PRELOADER
+       ───────────────────────────────────────────────── */
+    .preloader {
+      position: fixed; inset: 0; z-index: 10000;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 600ms var(--ease), visibility 600ms var(--ease);
+    }
+    .preloader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+    .preloader__text {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 48px);
+      color: var(--warm-white);
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: preloaderIn 800ms var(--ease) 200ms forwards;
+    }
+    @keyframes preloaderIn {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────────────────────────────────────
+       OUR STORY
+       ───────────────────────────────────────────────── */
+    .story {
+      background: var(--warm-white);
+      padding: 140px 0;
+    }
+    .story__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .story__eyebrow {
+      display: block;
+      margin-bottom: 24px;
+    }
+    .story__title {
+      font-family: var(--font-display);
+      font-size: 44px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .story__body {
+      margin-top: 32px;
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .story__body p + p { margin-top: 20px; }
+    .story__image {
+      aspect-ratio: 4/5;
+      border-radius: 4px;
+    }
+
+    /* ─────────────────────────────────────────────────
+       TRIPADVISOR BADGE
+       ───────────────────────────────────────────────── */
+    .ta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--warm-white);
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: box-shadow 300ms var(--ease), transform 300ms var(--ease);
+    }
+    .ta-badge:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); color: var(--ink); }
+    .ta-badge__stars { display: flex; gap: 3px; }
+    .ta-badge__star { width: 14px; height: 14px; border-radius: 50%; background: #00aa6c; }
+    .ta-badge__star--half { background: linear-gradient(90deg, #00aa6c 50%, var(--stone) 50%); }
+    .ta-badge__info { font-size: 12px; font-weight: 400; color: var(--muted); }
+    .ta-badge__rating { font-family: var(--font-display); font-size: 22px; color: var(--ink); }
+
+    /* ─────────────────────────────────────────────────
+       NEWSLETTER
+       ───────────────────────────────────────────────── */
+    .newsletter {
+      background: var(--ink);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .newsletter__title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 32px;
+      color: var(--warm-white);
+      letter-spacing: -0.02em;
+    }
+    .newsletter__sub {
+      margin-top: 12px;
+      font-size: 14px;
+      color: rgba(249,246,240,0.6);
+      font-weight: 300;
+    }
+    .newsletter__form {
+      margin-top: 32px;
+      display: flex;
+      gap: 12px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .newsletter__input {
+      flex: 1;
+      padding: 14px 20px;
+      background: rgba(249,246,240,0.08);
+      border: 1px solid rgba(249,246,240,0.2);
+      border-radius: 4px;
+      color: var(--warm-white);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 300ms var(--ease);
+    }
+    .newsletter__input::placeholder { color: rgba(249,246,240,0.4); }
+    .newsletter__input:focus { border-color: var(--clay); }
+    .newsletter__btn {
+      padding: 14px 28px;
+      background: var(--clay);
+      color: var(--warm-white);
+      border: none;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 300ms var(--ease), transform 200ms var(--ease);
+    }
+    .newsletter__btn:hover { background: #a0623f; transform: translateY(-1px); }
+
+    /* ─────────────────────────────────────────────────
+       FULL MENU SECTION
+       ───────────────────────────────────────────────── */
+    .full-menu {
+      background: var(--off-white);
+      padding: 120px 0;
+    }
+    .full-menu__head {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .full-menu__head .eyebrow { display: block; margin-bottom: 20px; }
+    .full-menu__head h2 {
+      font-family: var(--font-display);
+      font-size: 44px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .menu-category__title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      color: var(--ink);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--clay);
+    }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .menu-item__name {
+      font-weight: 400;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .menu-item__price {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-left: 16px;
+    }
+    .menu-item__tag {
+      font-size: 11px;
+      color: var(--clay);
+      font-weight: 400;
+    }
+
+    /* ─────────────────────────────────────────────────
+       GALLERY
+       ───────────────────────────────────────────────── */
+    .gallery {
+      padding: 120px 0;
+      background: var(--warm-white);
+    }
+    .gallery__head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .gallery__head .eyebrow { display: block; margin-bottom: 20px; }
+    .gallery__head h2 {
+      font-family: var(--font-display);
+      font-size: 44px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .gallery__grid .img-wrap {
+      aspect-ratio: 1;
+      border-radius: 4px;
+    }
+    .gallery__cta {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .gallery__cta a {
+      font-size: 14px;
+      color: var(--clay);
+      font-weight: 400;
+    }
 
     /* ─────────────────────────────────────────────────
        NAV
@@ -210,11 +501,12 @@
 
     /* scrolled state */
     .nav.is-scrolled {
-      background: rgba(249, 246, 240, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(28, 25, 22, 0.06);
+      background: rgba(249, 246, 240, 0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(28, 25, 22, 0.08);
+      box-shadow: 0 2px 20px rgba(28, 25, 22, 0.06);
     }
     .nav.is-scrolled .nav__brand { color: var(--ink); }
     .nav.is-scrolled .nav__links a { color: var(--ink); }
@@ -958,6 +1250,24 @@
     }
     .dishes__more a:hover::after { width: 100%; }
 
+    /* dish card hover overlay */
+    .dish figcaption {
+      transition: transform 300ms var(--ease);
+    }
+    .dish:hover figcaption {
+      transform: translateY(-4px);
+    }
+    .dish__img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(28,25,22,0.3) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 400ms var(--ease);
+      z-index: 2;
+      border-radius: 2px;
+    }
+    .dish:hover .dish__img::before { opacity: 1; }
+
     /* ─────────────────────────────────────────────────
        FEELING — editorial spread
        ───────────────────────────────────────────────── */
@@ -1261,6 +1571,10 @@
       .voices__grid { grid-template-columns: 1fr; gap: 48px; }
       .dishes__grid { grid-template-columns: 1fr; gap: 48px; max-width: 420px; }
       .feeling__grid { grid-template-columns: 1fr 1fr; }
+      .story__grid { grid-template-columns: 1fr; gap: 48px; }
+      .story__image { max-width: 400px; margin: 0 auto; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .gallery__grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 768px) {
@@ -1375,11 +1689,29 @@
       .foot__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
 
       .nav-overlay a { font-size: 44px; }
+
+      .story { padding: 80px 0; }
+      .story__title { font-size: 32px; }
+      .story__grid { grid-template-columns: 1fr; gap: 40px; }
+      .full-menu { padding: 80px 0; }
+      .full-menu__head h2 { font-size: 32px; }
+      .menu-grid { grid-template-columns: 1fr; gap: 32px; }
+      .gallery { padding: 80px 0; }
+      .gallery__grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 24px; }
+      .newsletter { padding: 56px 24px; }
+      .newsletter__title { font-size: 24px; }
+      .newsletter__form { flex-direction: column; padding: 0 24px; }
+      .newsletter__btn { width: 100%; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__text">4Stories</div>
+  </div>
+
   <!-- Custom cursor -->
   <div id="cursor" aria-hidden="true"></div>
 
@@ -1389,8 +1721,9 @@
       <a href="#top" class="nav__brand" data-hover>4Stories</a>
 
       <nav class="nav__links" aria-label="Primary">
-        <a href="#floors" data-hover>Menu</a>
+        <a href="#full-menu" data-hover>Menu</a>
         <a href="#floors" data-hover>Floors</a>
+        <a href="#gallery" data-hover>Gallery</a>
         <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" class="nav__cta" data-hover>Reserve</a>
       </nav>
 
@@ -1402,10 +1735,10 @@
 
   <!-- Mobile overlay -->
   <div class="nav-overlay" id="navOverlay" aria-hidden="true">
-    <a href="#floors" data-nav-close>Menu</a>
+    <a href="#full-menu" data-nav-close>Menu</a>
     <a href="#floors" data-nav-close>Floors</a>
-    <a href="#visit" data-nav-close>Reserve</a>
-    <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-nav-close>Instagram</a>
+    <a href="#gallery" data-nav-close>Gallery</a>
+    <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" data-nav-close>Reserve</a>
     <div class="nav-overlay__meta">SAAT GHUMTI MARG<br/>THAMEL · KATHMANDU<br/>7 AM — 2 AM</div>
   </div>
 
@@ -1437,6 +1770,53 @@
       </div>
     </section>
 
+    <!-- OUR STORY -->
+    <section class="story" id="story">
+      <div class="container">
+        <div class="story__grid">
+          <div class="story__content">
+            <span class="eyebrow eyebrow--clay story__eyebrow reveal">Our Story</span>
+            <h2 class="story__title reveal" style="transition-delay:100ms">Why four floors?<br>Because one wasn't enough.</h2>
+            <div class="story__body reveal" style="transition-delay:200ms">
+              <p>
+                4Stories started with a simple idea: what if every floor told a different story?
+                In the middle of Thamel's beautiful chaos, we carved out a space where
+                mornings feel slow, afternoons stretch, and nights come alive.
+              </p>
+              <p>
+                From the ground-floor coffee bar where espresso meets conversation, to the rooftop
+                where cocktails meet the Kathmandu skyline — every level was designed to make you
+                forget whatever's waiting outside.
+              </p>
+              <p>
+                We're not just a restaurant. We're four worlds under one roof. Come find yours.
+              </p>
+            </div>
+
+            <!-- TripAdvisor Badge -->
+            <a class="ta-badge reveal" style="transition-delay:300ms; margin-top: 32px;"
+               href="https://www.tripadvisor.com/Restaurant_Review-g293890-d25031794-Reviews-4STORIES-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
+               target="_blank" rel="noopener" data-hover>
+              <span class="ta-badge__rating">4.4</span>
+              <div>
+                <div class="ta-badge__stars">
+                  <span class="ta-badge__star"></span>
+                  <span class="ta-badge__star"></span>
+                  <span class="ta-badge__star"></span>
+                  <span class="ta-badge__star"></span>
+                  <span class="ta-badge__star--half"></span>
+                </div>
+                <span class="ta-badge__info">1,109 reviews on TripAdvisor</span>
+              </div>
+            </a>
+          </div>
+          <div class="img-wrap story__image reveal-image">
+            <img src="images/floor-01-coffee.jpg" alt="Inside 4Stories — warm ambient seating with cushions" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- FOUR FLOORS -->
     <section class="floors" id="floors">
       <!-- Sticky floor rail (desktop) -->
@@ -1456,8 +1836,6 @@
       <!-- Marquee divider -->
       <div class="floors__marquee reveal" aria-hidden="true">
         <div class="floors__marquee-track">
-          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
-          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
           Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
           Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
         </div>
@@ -1527,7 +1905,7 @@
           <div class="chapter__media">
             <div class="img-wrap reveal-image" data-hover>
               <img src="images/floor-03-dining.jpg"
-                   alt="A platter of wood-fired pizza and steamed dumplings" loading="lazy" />
+                   alt="The dining floor with dramatic wavy ceiling and warm ambient seating" loading="lazy" />
             </div>
             <div class="chapter__media-frame" aria-hidden="true"></div>
           </div>
@@ -1596,22 +1974,22 @@ people come back for.</h2>
           <figure class="dish reveal">
             <div class="img-wrap dish__img" data-hover>
               <img src="images/dish-matcha.jpg"
-                   alt="Matcha latte with heart-shaped latte art" loading="lazy" />
+                   alt="Veggie delight platter with falafel, guacamole and iced coffee" loading="lazy" />
             </div>
             <figcaption>
-              <div class="dish__name">Blueberry Matcha</div>
-              <div class="dish__desc">The one everyone orders twice.</div>
+              <div class="dish__name">The Veggie Delight</div>
+              <div class="dish__desc">Falafel, guacamole, hummus & everything good.</div>
             </figcaption>
           </figure>
 
           <figure class="dish reveal">
             <div class="img-wrap dish__img" data-hover>
               <img src="images/dish-benedict.jpg"
-                   alt="Eggs Benedict on sourdough dressed with pistachios" loading="lazy" />
+                   alt="Rice bowl with falafel, roasted vegetables and hummus" loading="lazy" />
             </div>
             <figcaption>
-              <div class="dish__name">Eggs Benedict</div>
-              <div class="dish__desc">The plate that starts your day twice.</div>
+              <div class="dish__name">Harvest Bowl</div>
+              <div class="dish__desc">Rice, falafel, roasted veg & all the good stuff.</div>
             </figcaption>
           </figure>
 
@@ -1628,7 +2006,7 @@ people come back for.</h2>
         </div>
 
         <div class="dishes__more reveal">
-          <a href="#floors" data-hover>See the full menu →</a>
+          <a href="#full-menu" data-hover>See the full menu →</a>
         </div>
       </div>
     </section>
@@ -1688,6 +2066,91 @@ the food is amazing.</blockquote>
       </div>
     </section>
 
+    <!-- FULL MENU -->
+    <section class="full-menu" id="full-menu">
+      <div class="container">
+        <div class="full-menu__head">
+          <span class="eyebrow eyebrow--clay reveal">What We Serve</span>
+          <h2 class="reveal" style="transition-delay:120ms">The Full Menu</h2>
+        </div>
+
+        <div class="menu-grid">
+          <div class="menu-category reveal">
+            <h3 class="menu-category__title">Coffee & Drinks</h3>
+            <div class="menu-item"><span class="menu-item__name">Espresso</span><span class="menu-item__price">NPR 250</span></div>
+            <div class="menu-item"><span class="menu-item__name">Flat White</span><span class="menu-item__price">NPR 350</span></div>
+            <div class="menu-item"><span class="menu-item__name">Blueberry Matcha <span class="menu-item__tag">Popular</span></span><span class="menu-item__price">NPR 450</span></div>
+            <div class="menu-item"><span class="menu-item__name">Iced Oat Cappuccino</span><span class="menu-item__price">NPR 400</span></div>
+            <div class="menu-item"><span class="menu-item__name">Chai Latte</span><span class="menu-item__price">NPR 300</span></div>
+            <div class="menu-item"><span class="menu-item__name">Fresh Juice (Seasonal)</span><span class="menu-item__price">NPR 350</span></div>
+          </div>
+
+          <div class="menu-category reveal" style="transition-delay:120ms">
+            <h3 class="menu-category__title">Brunch</h3>
+            <div class="menu-item"><span class="menu-item__name">Acai Bowl</span><span class="menu-item__price">NPR 650</span></div>
+            <div class="menu-item"><span class="menu-item__name">Smoothie Bowl <span class="menu-item__tag">Popular</span></span><span class="menu-item__price">NPR 550</span></div>
+            <div class="menu-item"><span class="menu-item__name">Wild Mushroom Toast</span><span class="menu-item__price">NPR 500</span></div>
+            <div class="menu-item"><span class="menu-item__name">Eggs Benedict</span><span class="menu-item__price">NPR 600</span></div>
+            <div class="menu-item"><span class="menu-item__name">French Toast</span><span class="menu-item__price">NPR 450</span></div>
+            <div class="menu-item"><span class="menu-item__name">Veggie Delight Platter</span><span class="menu-item__price">NPR 700</span></div>
+          </div>
+
+          <div class="menu-category reveal">
+            <h3 class="menu-category__title">Mains</h3>
+            <div class="menu-item"><span class="menu-item__name">Tofu Tacos</span><span class="menu-item__price">NPR 550</span></div>
+            <div class="menu-item"><span class="menu-item__name">Wood-fired Pizza <span class="menu-item__tag">Popular</span></span><span class="menu-item__price">NPR 750</span></div>
+            <div class="menu-item"><span class="menu-item__name">Harvest Bowl</span><span class="menu-item__price">NPR 650</span></div>
+            <div class="menu-item"><span class="menu-item__name">Nepali Thali</span><span class="menu-item__price">NPR 600</span></div>
+            <div class="menu-item"><span class="menu-item__name">Pasta of the Day</span><span class="menu-item__price">NPR 650</span></div>
+            <div class="menu-item"><span class="menu-item__name">Grilled Chicken Plate</span><span class="menu-item__price">NPR 800</span></div>
+          </div>
+
+          <div class="menu-category reveal" style="transition-delay:120ms">
+            <h3 class="menu-category__title">Rooftop Bar</h3>
+            <div class="menu-item"><span class="menu-item__name">Classic Mojito</span><span class="menu-item__price">NPR 600</span></div>
+            <div class="menu-item"><span class="menu-item__name">Espresso Martini <span class="menu-item__tag">Popular</span></span><span class="menu-item__price">NPR 750</span></div>
+            <div class="menu-item"><span class="menu-item__name">Aperol Spritz</span><span class="menu-item__price">NPR 700</span></div>
+            <div class="menu-item"><span class="menu-item__name">Local Craft Beer</span><span class="menu-item__price">NPR 500</span></div>
+            <div class="menu-item"><span class="menu-item__name">House Red / White Wine</span><span class="menu-item__price">NPR 650</span></div>
+            <div class="menu-item"><span class="menu-item__name">Hookah</span><span class="menu-item__price">NPR 800</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery" id="gallery">
+      <div class="gallery__head">
+        <span class="eyebrow reveal">Captured Moments</span>
+        <h2 class="reveal" style="transition-delay:120ms">Inside 4Stories</h2>
+      </div>
+      <div class="gallery__grid stagger">
+        <div class="img-wrap reveal"><img src="images/hero.jpg" alt="4Stories interior lounge" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/floor-02-brunch.jpg" alt="Open terrace brunch seating" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/floor-03-dining.jpg" alt="Dining floor with dramatic ceiling" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/floor-04-rooftop.jpg" alt="Rooftop bar with live music" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/feeling-ambient.jpg" alt="Food and coffee scene" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/dish-bowl.jpg" alt="Smoothie bowl" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/dish-matcha.jpg" alt="Veggie delight platter" loading="lazy" /></div>
+        <div class="img-wrap reveal"><img src="images/feeling-detail.jpg" alt="Veggie plate with coffee" loading="lazy" /></div>
+      </div>
+      <div class="gallery__cta reveal" style="margin-top: 40px; text-align: center;">
+        <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>Follow @4stories.np for more →</a>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <div class="container">
+        <h2 class="newsletter__title reveal">Stay in the loop.</h2>
+        <p class="newsletter__sub reveal" style="transition-delay:100ms">Events, live music nights, new menu drops & rooftop specials.</p>
+        <form class="newsletter__form reveal" style="transition-delay:200ms" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Subscribed!'; this.querySelector('input').value='';">
+          <input type="email" class="newsletter__input" placeholder="Your email address" required aria-label="Email address" />
+          <button type="submit" class="newsletter__btn">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
     <!-- VISIT -->
     <section class="visit" id="visit">
       <div class="container">
@@ -1721,6 +2184,11 @@ the food is amazing.</blockquote>
             <a class="visit__cta reveal" href="https://wa.me/9779808790813" target="_blank" rel="noopener" data-hover>
               <span>Reserve via WhatsApp ↗</span>
             </a>
+
+            <a class="reveal" style="display:block; text-align:center; margin-top:16px; font-size:13px; color:var(--muted); font-weight:400; transition-delay:120ms;"
+               href="https://www.google.com/maps/place/4Stories/@27.7142,85.3123,17z/" target="_blank" rel="noopener" data-hover>
+              View on Google Maps ↗
+            </a>
           </div>
         </div>
       </div>
@@ -1737,8 +2205,10 @@ the food is amazing.</blockquote>
         </div>
 
         <nav class="foot__links reveal" aria-label="Footer">
-          <a href="#floors" data-hover>Menu</a>
+          <a href="#full-menu" data-hover>Menu</a>
           <a href="#floors" data-hover>Floors</a>
+          <a href="#gallery" data-hover>Gallery</a>
+          <a href="#story" data-hover>Our Story</a>
           <a href="https://wa.me/9779808790813" target="_blank" rel="noopener" data-hover>Reserve</a>
           <a href="https://instagram.com/4stories.np" target="_blank" rel="noopener" data-hover>Instagram</a>
         </nav>
@@ -1748,13 +2218,25 @@ Thamel, Kathmandu</div>
       </div>
 
       <div class="foot__bottom">
-        <span>© 2025 4Stories</span>
+        <span>© <script>document.write(new Date().getFullYear())</script> 4Stories</span>
         <span>Made with intention.</span>
       </div>
     </div>
   </footer>
 
   <script>
+    /* ─────────────────────────────────────────────────
+       PRELOADER
+       ───────────────────────────────────────────────── */
+    (function () {
+      const preloader = document.getElementById('preloader');
+      if (!preloader) return;
+      window.addEventListener('load', () => {
+        setTimeout(() => preloader.classList.add('is-done'), 800);
+        setTimeout(() => preloader.remove(), 1500);
+      });
+    })();
+
     /* ─────────────────────────────────────────────────
        CUSTOM CURSOR
        ───────────────────────────────────────────────── */
@@ -1916,6 +2398,27 @@ Thamel, Kathmandu</div>
           window.scrollTo({ top: y, behavior: 'smooth' });
         });
       });
+    })();
+
+    /* ─────────────────────────────────────────────────
+       HERO PARALLAX
+       ───────────────────────────────────────────────── */
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.matchMedia('(hover: none)').matches) return;
+      const heroBg = document.querySelector('.hero__bg');
+      if (!heroBg) return;
+      let ticking = false;
+      function update() {
+        const scrollY = window.scrollY;
+        if (scrollY < window.innerHeight * 1.5) {
+          heroBg.style.transform = `translate3d(0, ${(scrollY * 0.35).toFixed(1)}px, 0)`;
+        }
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
     })();
   </script>
 </body>
