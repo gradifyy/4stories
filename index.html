@@ -802,246 +802,117 @@
     }
 
     /* ─────────────────────────────────────────────────
-       FOUR FLOORS — editorial, layered, cinematic
+       FOUR FLOORS — clean card layout
        ───────────────────────────────────────────────── */
     .floors {
-      position: relative;
       background: var(--off-white);
-      padding: var(--section-space) 0 0;
-      overflow: hidden;
+      padding: var(--section-space) 0;
     }
-
-    /* section header */
     .floors__head {
-      position: relative;
-      z-index: 2;
       text-align: center;
-      padding: 0 32px;
+      margin-bottom: 64px;
     }
-    .floors__head .eyebrow { display: block; margin-bottom: 28px; }
+    .floors__head .eyebrow { display: block; margin-bottom: 20px; }
     .floors__head h2 {
       font-family: var(--font-display);
-      font-size: clamp(56px, 9vw, 112px);
+      font-size: clamp(36px, 5vw, 52px);
       color: var(--ink);
       letter-spacing: -0.03em;
-      line-height: 0.95;
+      line-height: 1.08;
     }
-    .floors__head h2 em {
-      font-style: italic;
-      color: var(--clay);
-      font-weight: 400;
-    }
-
-    /* marquee divider */
-    .floors__marquee {
-      margin: 80px 0 120px;
-      overflow: hidden;
-      border-top: 1px solid var(--stone);
-      border-bottom: 1px solid var(--stone);
-      padding: 24px 0;
-      white-space: nowrap;
-      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-      -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-    }
-    .floors__marquee-track {
-      display: inline-block;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(28px, 4vw, 44px);
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      animation: marquee 42s linear infinite;
-      will-change: transform;
-    }
-    .floors__marquee-track span { color: var(--clay); margin: 0 28px; font-style: normal; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* sticky floor rail (desktop only) */
-    .floors__rail {
-      position: fixed;
-      top: 50%;
-      left: clamp(20px, 2.4vw, 44px);
-      transform: translateY(-50%);
-      z-index: 40;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 600ms var(--ease);
-    }
-    .floors__rail.is-visible { opacity: 1; pointer-events: auto; }
-    .floors__rail-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
+    .floors__head p {
+      margin: 16px auto 0;
+      font-size: 15px;
       color: var(--muted);
-      transition: color 400ms var(--ease);
+      max-width: 400px;
     }
-    .floors__rail-item::before {
-      content: "";
-      display: block;
-      width: 8px; height: 1px;
-      background: var(--muted);
-      transition: width 400ms var(--ease), background 400ms var(--ease);
-    }
-    .floors__rail-item.is-active { color: var(--ink); }
-    .floors__rail-item.is-active::before {
-      width: 28px;
-      background: var(--clay);
-    }
-    .floors__rail.on-dark .floors__rail-item { color: rgba(249, 246, 240, 0.55); }
-    .floors__rail.on-dark .floors__rail-item::before { background: rgba(249, 246, 240, 0.35); }
-    .floors__rail.on-dark .floors__rail-item.is-active { color: var(--warm-white); }
-    .floors__rail.on-dark .floors__rail-item.is-active::before { background: var(--clay); }
 
-    /* chapter */
-    .chapter {
-      position: relative;
-      padding: 100px 0;
-    }
-    .chapter__inner {
-      position: relative;
+    .floors__stack {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
       max-width: var(--max);
       margin: 0 auto;
       padding: 0 32px;
+    }
+
+    .floor-card {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
-      align-items: center;
-      min-height: 620px;
+      background: var(--warm-white);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      transition: box-shadow 500ms var(--ease), transform 400ms var(--ease);
     }
-    .chapter--reverse .chapter__media { order: 2; }
-    .chapter--reverse .chapter__body  { order: 1; }
-
-    /* ghost ordinal behind content */
-    .chapter__ghost {
-      position: absolute;
-      font-family: var(--font-display);
-      font-size: clamp(220px, 36vw, 460px);
-      color: var(--ink);
-      opacity: 0.055;
-      line-height: 0.8;
-      letter-spacing: -0.05em;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-      top: -60px;
+    .floor-card:hover {
+      box-shadow: 0 24px 64px rgba(28, 25, 22, 0.1);
+      transform: translateY(-4px);
     }
-    .chapter--01 .chapter__ghost { right: -40px; }
-    .chapter--02 .chapter__ghost { left: -40px; }
-    .chapter--03 .chapter__ghost { right: -40px; }
+    .floor-card--reverse { direction: rtl; }
+    .floor-card--reverse > * { direction: ltr; }
 
-    /* media */
-    .chapter__media {
+    .floor-card__img {
       position: relative;
-      height: 620px;
-      z-index: 1;
+      overflow: hidden;
+      min-height: 400px;
     }
-    .chapter__media .img-wrap {
+    .floor-card__img img {
+      position: absolute; inset: 0;
       width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(0.94) contrast(0.98) brightness(0.98);
+      transition: transform 700ms var(--ease);
     }
-    .chapter__media-frame {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 3;
-    }
-    .chapter__media-frame::before,
-    .chapter__media-frame::after {
-      content: "";
-      position: absolute;
-      width: 18px; height: 18px;
-      border: 1px solid var(--clay);
-      opacity: 0.75;
-    }
-    .chapter__media-frame::before {
-      top: 14px; left: 14px;
-      border-right: 0; border-bottom: 0;
-    }
-    .chapter__media-frame::after {
-      bottom: 14px; right: 14px;
-      border-left: 0; border-top: 0;
+    .floor-card:hover .floor-card__img img {
+      transform: scale(1.04);
     }
 
-    /* body */
-    .chapter__body {
-      position: relative;
-      z-index: 2;
-      padding: 0 16px;
-      max-width: 520px;
-    }
-    .chapter:not(.chapter--reverse) .chapter__body {
-      padding-left: 72px;
-      padding-right: 16px;
-    }
-    .chapter--reverse .chapter__body {
-      padding-right: 72px;
-      padding-left: 16px;
-      margin-left: auto;
-    }
-
-    .chapter__eyebrow {
+    .floor-card__body {
       display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      color: var(--clay);
-      text-transform: uppercase;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 52px;
     }
-    .chapter__eyebrow::after {
-      content: "";
-      display: block;
-      flex: 0 0 56px;
-      height: 1px;
-      background: var(--clay);
-      opacity: 0.55;
-    }
-    .chapter__name {
-      margin-top: 28px;
+    .floor-card__num {
       font-family: var(--font-display);
-      font-size: clamp(40px, 5.6vw, 64px);
-      color: var(--ink);
-      letter-spacing: -0.03em;
-      line-height: 0.98;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--stone);
+      letter-spacing: -0.04em;
+      margin-bottom: 20px;
     }
-    .chapter:not(.chapter--reverse) .chapter__name { margin-left: -56px; }
-    .chapter--reverse .chapter__name              { margin-right: -56px; }
-
-    .chapter__tag {
-      margin-top: 18px;
+    .floor-card__name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 36px);
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .floor-card__tag {
+      margin-top: 10px;
       font-family: var(--font-display);
       font-style: italic;
-      font-size: clamp(18px, 2vw, 24px);
+      font-size: 16px;
       color: var(--muted);
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      max-width: 380px;
+      line-height: 1.4;
     }
-    .chapter__copy {
-      margin-top: 28px;
-      font-size: 15px;
-      line-height: 1.85;
+    .floor-card__desc {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.75;
       color: var(--muted);
       font-weight: 400;
       max-width: 360px;
     }
-    .chapter__highlights {
-      margin-top: 24px;
-      list-style: none;
+    .floor-card__chips {
+      margin-top: 20px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
-    .chapter__highlights li {
+    .floor-card__chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -1051,153 +922,67 @@
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 11px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--muted);
       text-transform: uppercase;
     }
-    .chapter__highlights li::before {
+    .floor-card__chip::before {
       content: "";
       width: 5px; height: 5px;
       border-radius: 999px;
       background: var(--clay);
       flex-shrink: 0;
     }
-    .chapter__hours {
-      margin-top: 28px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-    .chapter__hours::before {
-      content: "";
-      width: 5px; height: 5px;
-      border-radius: 999px;
-      background: var(--clay);
-      flex: 0 0 5px;
-    }
-
-    .chip {
-      display: inline-block;
-      padding: 8px 16px;
-      border: 1px solid var(--stone);
-      border-radius: 2px;
+    .floor-card__hours {
+      margin-top: 20px;
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 12px;
-      color: var(--ink);
       letter-spacing: 0.15em;
+      color: var(--clay);
       text-transform: uppercase;
     }
-    .chip--light {
-      border-color: rgba(249, 246, 240, 0.4);
-      color: var(--warm-white);
-      background: rgba(28, 25, 22, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: background 400ms var(--ease), color 400ms var(--ease);
-    }
-    .chip--light:hover {
-      background: var(--warm-white);
-      color: var(--ink);
-    }
 
-    /* connector between chapters */
-    .chapter__connector {
-      display: block;
-      width: 1px;
-      height: 120px;
-      margin: 0 auto;
-      background: linear-gradient(to bottom, transparent, var(--stone) 40%, var(--stone) 60%, transparent);
-    }
-
-    /* ─── Floor 04 · The Rooftop — poster ─── */
-    .floor-4 {
-      position: relative;
-      height: 100vh;
-      min-height: 700px;
-      overflow: hidden;
+    /* Floor 04 — dark full-bleed rooftop card */
+    .floor-card--dark {
       background: var(--ink);
-      color: var(--warm-white);
-    }
-    .floor-4__bg {
-      position: absolute; inset: 0;
-      background-image: url("images/floor-04-rooftop.webp");
-      background-size: cover;
-      background-position: center;
-      animation: kenburns 26s ease-in-out infinite alternate;
-    }
-    .floor-4__bg::after {
-      content: "";
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(to bottom,
-          rgba(28,25,22,0.25) 0%,
-          rgba(28,25,22,0.45) 45%,
-          rgba(28,25,22,0.85) 100%);
-    }
-    @keyframes kenburns {
-      0%   { transform: scale(1.00) translate(0%, 0%); }
-      100% { transform: scale(1.14) translate(-1.8%, -1.2%); }
-    }
-
-    .floor-4__grid {
+      border-color: transparent;
       position: relative;
-      z-index: 2;
-      height: 100%;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 88px 32px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 40px;
     }
-    .floor-4__top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 32px;
-    }
-    .floor-4__index {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.25em;
-      color: rgba(249, 246, 240, 0.6);
-      text-transform: uppercase;
-    }
-    .floor-4__index::before {
+    .floor-card--dark .floor-card__img::after {
       content: "";
-      display: block;
-      width: 40px; height: 1px;
-      background: rgba(249, 246, 240, 0.4);
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(28,25,22,0.5) 0%, transparent 60%);
+      z-index: 1;
     }
-    .floor-4__live {
+    .floor-card--dark .floor-card__num { color: rgba(249, 246, 240, 0.15); }
+    .floor-card--dark .floor-card__name { color: var(--warm-white); }
+    .floor-card--dark .floor-card__tag { color: rgba(249, 246, 240, 0.65); }
+    .floor-card--dark .floor-card__desc { color: rgba(249, 246, 240, 0.55); }
+    .floor-card--dark .floor-card__chip {
+      background: rgba(249, 246, 240, 0.08);
+      color: rgba(249, 246, 240, 0.6);
+    }
+    .floor-card--dark .floor-card__hours { color: var(--clay); }
+    .floor-card--dark .floor-card__live {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      margin-top: 16px;
       font-family: var(--font-mono);
       font-weight: 300;
       font-size: 11px;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.2em;
       color: var(--warm-white);
       text-transform: uppercase;
     }
-    .floor-4__live-dot {
+    .floor-card__live-dot {
       width: 8px; height: 8px;
       border-radius: 999px;
       background: var(--clay);
       position: relative;
     }
-    .floor-4__live-dot::after {
+    .floor-card__live-dot::after {
       content: "";
       position: absolute; inset: 0;
       border-radius: 999px;
@@ -1205,74 +990,8 @@
       animation: livepulse 1800ms ease-out infinite;
     }
     @keyframes livepulse {
-      0%   { transform: scale(1);   opacity: 0.7; }
-      100% { transform: scale(3.2); opacity: 0;   }
-    }
-
-    .floor-4__center {
-      align-self: center;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 48px;
-      align-items: end;
-    }
-    .floor-4__num {
-      font-family: var(--font-display);
-      font-size: clamp(160px, 24vw, 320px);
-      line-height: 0.82;
-      color: transparent;
-      -webkit-text-stroke: 1.2px rgba(249, 246, 240, 0.8);
-      letter-spacing: -0.05em;
-    }
-    .floor-4__copy {
-      padding-bottom: 18px;
-      max-width: 560px;
-    }
-    .floor-4__name {
-      font-family: var(--font-display);
-      font-size: clamp(48px, 7vw, 96px);
-      color: var(--warm-white);
-      letter-spacing: -0.03em;
-      line-height: 0.95;
-    }
-    .floor-4__tag {
-      margin-top: 20px;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(18px, 2.2vw, 26px);
-      color: rgba(249, 246, 240, 0.75);
-      line-height: 1.35;
-    }
-
-    .floor-4__bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      padding-top: 28px;
-      border-top: 1px solid rgba(249, 246, 240, 0.16);
-    }
-    .floor-4__meta {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 28px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      color: rgba(249, 246, 240, 0.6);
-      text-transform: uppercase;
-    }
-    .floor-4__meta span { position: relative; }
-    .floor-4__meta span + span::before {
-      content: "";
-      position: absolute;
-      left: -15px; top: 50%;
-      width: 3px; height: 3px;
-      border-radius: 999px;
-      background: rgba(249, 246, 240, 0.3);
-      transform: translateY(-50%);
+      0%   { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(3.2); opacity: 0; }
     }
 
     /* ─────────────────────────────────────────────────
@@ -1797,7 +1516,10 @@
        RESPONSIVE
        ───────────────────────────────────────────────── */
     @media (max-width: 1200px) {
-      .floors__rail { display: none; }
+      .floor-card { grid-template-columns: 1fr; }
+      .floor-card--reverse { direction: ltr; }
+      .floor-card__img { min-height: 300px; }
+      .floor-card__body { padding: 36px 32px; }
     }
     @media (max-width: 900px) {
       .voices__grid { grid-template-columns: 1fr; gap: 48px; }
@@ -1834,65 +1556,11 @@
       .intro__lede { font-size: 30px; }
       .intro__body { font-size: 16px; }
 
-      .floors { padding: 80px 0 0; }
-      .floors__head { padding: 0 24px; }
-      .floors__head h2 { font-size: 44px; }
-      .floors__marquee { margin: 56px 0 64px; padding: 18px 0; }
-      .floors__marquee-track { font-size: 22px; }
-
-      .chapter { padding: 48px 0; }
-      .chapter__inner {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        gap: 24px;
-        padding: 0 24px;
-      }
-      .chapter--reverse .chapter__media { order: 1; }
-      .chapter--reverse .chapter__body  { order: 2; }
-      .chapter__media { height: 380px; }
-      .chapter__body,
-      .chapter:not(.chapter--reverse) .chapter__body,
-      .chapter--reverse .chapter__body {
-        padding: 0;
-        max-width: 100%;
-      }
-      .chapter__ghost {
-        font-size: 140px;
-        top: -12px;
-        opacity: 0.07;
-      }
-      .chapter--01 .chapter__ghost { right: -8px; }
-      .chapter--02 .chapter__ghost { left: -8px; }
-      .chapter--03 .chapter__ghost { right: -8px; }
-      .chapter:not(.chapter--reverse) .chapter__name,
-      .chapter--reverse .chapter__name {
-        margin-left: 0;
-        margin-right: 0;
-      }
-      .chapter__name { font-size: 34px; }
-      .chapter__tag { font-size: 18px; }
-      .chapter__media-frame::before,
-      .chapter__media-frame::after { width: 12px; height: 12px; }
-
-      .chapter__connector { height: 56px; }
-
-      .floor-4 { height: auto; min-height: 640px; }
-      .floor-4__grid { padding: 72px 24px; gap: 28px; }
-      .floor-4__top { gap: 16px; flex-wrap: wrap; }
-      .floor-4__center {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        align-items: start;
-      }
-      .floor-4__num { font-size: 140px; line-height: 0.85; }
-      .floor-4__name { font-size: 44px; }
-      .floor-4__tag { font-size: 18px; }
-      .floor-4__bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-      }
-      .floor-4__meta { gap: 20px; font-size: 10px; }
+      .floors { padding: 80px 0; }
+      .floors__stack { padding: 0 16px; }
+      .floor-card__num { font-size: 48px; }
+      .floor-card__name { font-size: 26px; }
+      .floor-card__img { min-height: 260px; }
 
       .dishes { padding: 80px 24px; }
       .dishes__head h2 { font-size: 34px; }
@@ -2058,161 +1726,111 @@
 
     <!-- FOUR FLOORS -->
     <section class="floors" id="floors">
-      <!-- Sticky floor rail (desktop) -->
-      <nav class="floors__rail" id="floorRail" aria-label="Floor index">
-        <a href="#floor-01" class="floors__rail-item" data-rail="01">01</a>
-        <a href="#floor-02" class="floors__rail-item" data-rail="02">02</a>
-        <a href="#floor-03" class="floors__rail-item" data-rail="03">03</a>
-        <a href="#floor-04" class="floors__rail-item" data-rail="04">04</a>
-      </nav>
-
-      <!-- Section header -->
-      <header class="floors__head">
-        <span class="eyebrow reveal">01 / The Building</span>
-        <h2 class="reveal" style="transition-delay:120ms">Four <em>stories.</em></h2>
-      </header>
-
-      <!-- Marquee divider -->
-      <div class="floors__marquee reveal" aria-hidden="true">
-        <div class="floors__marquee-track">
-          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
-          Four floors <span>·</span> Four worlds <span>·</span> One building <span>·</span>
-        </div>
+      <div class="container">
+        <header class="floors__head">
+          <span class="eyebrow reveal">The Building</span>
+          <h2 class="reveal" style="transition-delay:120ms">Four floors. Four worlds.</h2>
+          <p class="reveal" style="transition-delay:200ms">Each level its own character, its own rhythm, its own reason to stay.</p>
+        </header>
       </div>
 
-      <!-- Floor 01 -->
-      <article class="chapter chapter--01" id="floor-01" data-floor="01">
-        <div class="chapter__inner">
-          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">01</div>
-
-          <div class="chapter__media">
-            <div class="img-wrap reveal-image" data-hover>
-              <img src="images/floor-01-coffee.webp"
-                   alt="4Stories coffee bar with lounge seating, plants and the bar counter in view" loading="lazy" />
-            </div>
-            <div class="chapter__media-frame" aria-hidden="true"></div>
+      <div class="floors__stack">
+        <!-- Floor 01 -->
+        <article class="floor-card reveal" id="floor-01">
+          <div class="floor-card__img">
+            <img src="images/floor-01-coffee.webp"
+                 alt="4Stories coffee bar with lounge seating, plants and the bar counter in view" loading="lazy" />
           </div>
-
-          <div class="chapter__body stagger" data-parallax="0.04">
-            <div class="chapter__eyebrow reveal">Floor 01</div>
-            <h3 class="chapter__name reveal">The Coffee Bar</h3>
-            <p class="chapter__tag reveal">Where every morning begins.</p>
-            <p class="chapter__copy reveal">
+          <div class="floor-card__body">
+            <div class="floor-card__num">01</div>
+            <h3 class="floor-card__name">The Coffee Bar</h3>
+            <p class="floor-card__tag">Where every morning begins.</p>
+            <p class="floor-card__desc">
               Ground floor. The entry. The smell of espresso before you've said a word.
               Pull up a stool, open your notebook, let Kathmandu wait outside.
             </p>
-            <ul class="chapter__highlights reveal">
-              <li>Espresso Bar</li>
-              <li>Lounge Seating</li>
-              <li>Pour-over</li>
-            </ul>
-            <div class="chapter__hours reveal">7 AM onwards</div>
-          </div>
-        </div>
-      </article>
-
-      <span class="chapter__connector" aria-hidden="true"></span>
-
-      <!-- Floor 02 -->
-      <article class="chapter chapter--reverse chapter--02" id="floor-02" data-floor="02">
-        <div class="chapter__inner">
-          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">02</div>
-
-          <div class="chapter__media">
-            <div class="img-wrap reveal-image" data-hover>
-              <img src="images/floor-02-brunch.webp"
-                   alt="A poached egg stack with guacamole, corn and chili sauce" loading="lazy" />
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Espresso Bar</span>
+              <span class="floor-card__chip">Lounge Seating</span>
+              <span class="floor-card__chip">Pour-over</span>
             </div>
-            <div class="chapter__media-frame" aria-hidden="true"></div>
+            <div class="floor-card__hours">7 AM onwards</div>
           </div>
+        </article>
 
-          <div class="chapter__body stagger" data-parallax="0.04">
-            <div class="chapter__eyebrow reveal">Floor 02</div>
-            <h3 class="chapter__name reveal">The Brunch Table</h3>
-            <p class="chapter__tag reveal">The meal that turns into conversation.</p>
-            <p class="chapter__copy reveal">
+        <!-- Floor 02 -->
+        <article class="floor-card floor-card--reverse reveal" id="floor-02">
+          <div class="floor-card__img">
+            <img src="images/floor-02-brunch.webp"
+                 alt="A poached egg stack with guacamole, corn and chili sauce" loading="lazy" />
+          </div>
+          <div class="floor-card__body">
+            <div class="floor-card__num">02</div>
+            <h3 class="floor-card__name">The Brunch Table</h3>
+            <p class="floor-card__tag">The meal that turns into conversation.</p>
+            <p class="floor-card__desc">
               Acai bowls. Wild mushroom toast. Blueberry matcha that people order twice.
-              The second floor is unhurried — a place for mornings that stretch into afternoons.
+              The second floor is unhurried — mornings that stretch into afternoons.
             </p>
-            <ul class="chapter__highlights reveal">
-              <li>Brunch Menu</li>
-              <li>Matcha</li>
-              <li>Smoothie Bowls</li>
-            </ul>
-            <div class="chapter__hours reveal">9 AM – 4 PM</div>
-          </div>
-        </div>
-      </article>
-
-      <span class="chapter__connector" aria-hidden="true"></span>
-
-      <!-- Floor 03 -->
-      <article class="chapter chapter--03" id="floor-03" data-floor="03">
-        <div class="chapter__inner">
-          <div class="chapter__ghost" aria-hidden="true" data-parallax="0.14">03</div>
-
-          <div class="chapter__media">
-            <div class="img-wrap reveal-image" data-hover>
-              <img src="images/floor-03-dining.webp"
-                   alt="4Stories dining room during live music with warm lighting and lounge seating" loading="lazy" />
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Brunch Menu</span>
+              <span class="floor-card__chip">Matcha</span>
+              <span class="floor-card__chip">Smoothie Bowls</span>
             </div>
-            <div class="chapter__media-frame" aria-hidden="true"></div>
+            <div class="floor-card__hours">9 AM – 4 PM</div>
           </div>
+        </article>
 
-          <div class="chapter__body stagger" data-parallax="0.04">
-            <div class="chapter__eyebrow reveal">Floor 03</div>
-            <h3 class="chapter__name reveal">The Dining Room</h3>
-            <p class="chapter__tag reveal">Flavors from here and everywhere.</p>
-            <p class="chapter__copy reveal">
+        <!-- Floor 03 -->
+        <article class="floor-card reveal" id="floor-03">
+          <div class="floor-card__img">
+            <img src="images/floor-03-dining.webp"
+                 alt="4Stories dining room during live music with warm lighting and lounge seating" loading="lazy" />
+          </div>
+          <div class="floor-card__body">
+            <div class="floor-card__num">03</div>
+            <h3 class="floor-card__name">The Dining Room</h3>
+            <p class="floor-card__tag">Flavors from here and everywhere.</p>
+            <p class="floor-card__desc">
               Tofu tacos alongside Nepali classics. Pizza from a real kitchen.
-              Food that surprises you regardless of where you're from. The third floor is where
-              you come for dinner and stay for the music.
+              Food that surprises you regardless of where you're from. Come for dinner, stay for the music.
             </p>
-            <ul class="chapter__highlights reveal">
-              <li>Live Music</li>
-              <li>Nepali Thali</li>
-              <li>Wood-fired Pizza</li>
-            </ul>
-            <div class="chapter__hours reveal">12 PM – 11 PM</div>
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Live Music</span>
+              <span class="floor-card__chip">Nepali Thali</span>
+              <span class="floor-card__chip">Wood-fired Pizza</span>
+            </div>
+            <div class="floor-card__hours">12 PM – 11 PM</div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Floor 04 — The Rooftop · poster -->
-      <section class="floor-4" id="floor-04" data-floor="04" data-hover>
-        <div class="floor-4__bg" aria-hidden="true"></div>
-
-        <div class="floor-4__grid">
-          <div class="floor-4__top">
-            <div class="floor-4__index reveal">The Rooftop · 04 / 04</div>
-            <div class="floor-4__live reveal" style="transition-delay:120ms">
-              <span class="floor-4__live-dot" aria-hidden="true"></span>
+        <!-- Floor 04 -->
+        <article class="floor-card floor-card--dark floor-card--reverse reveal" id="floor-04">
+          <div class="floor-card__img">
+            <img src="images/floor-04-rooftop.webp"
+                 alt="4Stories rooftop terrace at dusk with city views and warm lighting" loading="lazy" />
+          </div>
+          <div class="floor-card__body">
+            <div class="floor-card__num">04</div>
+            <h3 class="floor-card__name">The Rooftop</h3>
+            <p class="floor-card__tag">Thamel from above. Cocktails. Live music. Tonight.</p>
+            <p class="floor-card__desc">
+              The top floor opens up to the sky. Cocktails, hookah, and live music
+              with the Kathmandu skyline as backdrop. This is where evenings turn into nights.
+            </p>
+            <div class="floor-card__chips">
+              <span class="floor-card__chip">Cocktails</span>
+              <span class="floor-card__chip">Live Music</span>
+              <span class="floor-card__chip">Hookah</span>
+            </div>
+            <div class="floor-card__hours">5 PM – 2 AM</div>
+            <div class="floor-card__live">
+              <span class="floor-card__live-dot" aria-hidden="true"></span>
               Live · Tonight
             </div>
           </div>
-
-          <div class="floor-4__center">
-            <div class="floor-4__num reveal" aria-hidden="true">04</div>
-            <div class="floor-4__copy stagger">
-              <h3 class="floor-4__name reveal">The Rooftop</h3>
-              <p class="floor-4__tag reveal">Thamel from above. Cocktails. Live music. Tonight.</p>
-            </div>
-          </div>
-
-          <div class="floor-4__bottom">
-            <div class="floor-4__meta reveal">
-              <span>5 PM — 2 AM</span>
-              <span>Cocktails</span>
-              <span>Live Music</span>
-              <span>Hookah</span>
-            </div>
-            <a href="https://wa.me/9779808790813" target="_blank" rel="noopener"
-               class="chip chip--light reveal" style="transition-delay:120ms" data-hover>
-              Book the rooftop ↗
-            </a>
-          </div>
-        </div>
-      </section>
+        </article>
+      </div>
     </section>
 
     <!-- SIGNATURE DISHES — carousel -->
@@ -2690,47 +2308,6 @@ Thamel, Kathmandu 44600</div>
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
       update();
-    })();
-
-    /* ─────────────────────────────────────────────────
-       FLOOR RAIL — sticky index with active floor tracking
-       ───────────────────────────────────────────────── */
-    (function () {
-      const rail = document.getElementById('floorRail');
-      const floorsSection = document.getElementById('floors');
-      if (!rail || !floorsSection || !('IntersectionObserver' in window)) return;
-
-      const items = rail.querySelectorAll('.floors__rail-item');
-      const floors = floorsSection.querySelectorAll('[data-floor]');
-
-      // Show/hide the rail when the floors section is in the viewport
-      const sectionObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => rail.classList.toggle('is-visible', e.isIntersecting));
-      }, { threshold: 0, rootMargin: '-80px 0px -80px 0px' });
-      sectionObs.observe(floorsSection);
-
-      // Track which floor is nearest viewport center
-      const setActive = (id) => {
-        items.forEach(i => i.classList.toggle('is-active', i.dataset.rail === id));
-        rail.classList.toggle('on-dark', id === '04');
-      };
-      const floorObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) setActive(e.target.dataset.floor);
-        });
-      }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
-      floors.forEach(f => floorObs.observe(f));
-
-      // Smooth scroll on click (offset for fixed nav)
-      items.forEach(item => {
-        item.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector(item.getAttribute('href'));
-          if (!target) return;
-          const y = target.getBoundingClientRect().top + window.scrollY - 80;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        });
-      });
     })();
 
     /* ─────────────────────────────────────────────────
