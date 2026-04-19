@@ -1467,60 +1467,6 @@
       fill: none;
     }
 
-    /* ─────────────────────────────────────────────────
-       FEELING — editorial spread
-       ───────────────────────────────────────────────── */
-    .feeling {
-      position: relative;
-      background: var(--ink);
-      min-height: 70vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-    .feeling__grid {
-      position: absolute; inset: 0;
-      display: grid;
-      grid-template-columns: 60% 40%;
-    }
-    .feeling__grid .img-wrap { height: 100%; }
-    .feeling__grid .img-wrap::after {
-      background:
-        radial-gradient(ellipse at center,
-          transparent 20%,
-          rgba(28,25,22,0.6) 100%);
-    }
-    .feeling__grid img { width: 100%; height: 100%; object-fit: cover; }
-
-    .feeling__quote {
-      position: relative;
-      z-index: 2;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 120px 32px;
-      text-align: center;
-      color: var(--warm-white);
-    }
-    .feeling__quote blockquote {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 38px;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
-      color: var(--warm-white);
-      white-space: pre-line;
-    }
-    .feeling__quote cite {
-      display: block;
-      margin-top: 24px;
-      font-family: var(--font-mono);
-      font-weight: 300;
-      font-size: 11px;
-      font-style: normal;
-      letter-spacing: 0.2em;
-      color: rgba(249, 246, 240, 0.5);
-      text-transform: uppercase;
-    }
 
     /* ─────────────────────────────────────────────────
        TESTIMONIALS
@@ -1859,7 +1805,6 @@
       .dishes__track { height: 380px; }
       .dish-card.is-prev { transform: translateX(-65%) translateZ(-60px) scale(0.85) rotateY(6deg); }
       .dish-card.is-next { transform: translateX(65%) translateZ(-60px) scale(0.85) rotateY(-6deg); }
-      .feeling__grid { grid-template-columns: 1fr 1fr; }
       .story__grid { grid-template-columns: 1fr; gap: 48px; }
       .story__image { max-width: 400px; margin: 0 auto; }
       .menu-grid { grid-template-columns: 1fr; }
@@ -1959,15 +1904,6 @@
       .dishes__arrow { width: 40px; height: 40px; }
       .dishes__cta { height: 42px; padding: 0 24px; font-size: 13px; }
 
-      .feeling { min-height: auto; }
-      .feeling__grid {
-        position: relative;
-        inset: auto;
-        grid-template-columns: 1fr 1fr;
-        height: 280px;
-      }
-      .feeling__quote { position: relative; padding: 64px 24px; }
-      .feeling__quote blockquote { font-size: 26px; }
 
       .voices { padding: 80px 24px; }
       .voices__hero { font-size: 26px; }
@@ -2362,25 +2298,6 @@
       </div>
     </section>
 
-    <!-- FEELING -->
-    <section class="feeling" aria-label="Editorial spread">
-      <div class="feeling__grid" aria-hidden="true">
-        <div class="img-wrap">
-          <img src="images/feeling-ambient.webp"
-               alt="Sculptural ceiling over cream sofas and warm lighting" loading="lazy" />
-        </div>
-        <div class="img-wrap">
-          <img src="images/feeling-detail.webp"
-               alt="A brownie with 'Happy Birthday' written in chocolate" loading="lazy" />
-        </div>
-      </div>
-
-      <div class="feeling__quote">
-        <blockquote class="reveal">The atmosphere is so sexy,
-the food is amazing.</blockquote>
-        <cite class="reveal" style="transition-delay:120ms">— TripAdvisor, 2024</cite>
-      </div>
-    </section>
 
     <!-- VOICES -->
     <section class="voices">
